@@ -36,3 +36,22 @@
     transform: rotate(360deg);
   }
 }
+
+.photo{
+  margin: 40px;
+  background-color: black;
+  
+}
+
+.explanation{
+  color: white;
+}
+
+.title{
+  color: white;
+}
+
+.media{
+  height: 700px;
+  width: 1400px;
+}
