@@ -55,7 +55,6 @@ export default function NavBar() {
     const getNextDate = nextDate()
 
 
-
     const isLastPost = () => storeDate === lastPost || isLoadingStore === true ? false : true
     const isFirstPost = () => storeDate === firstPost || isLoadingStore === true ? false : true
     const isValidDate = () => {

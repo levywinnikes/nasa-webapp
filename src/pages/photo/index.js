@@ -9,12 +9,13 @@ export default function NasaPhoto(props) {
     const [nasaPhoto, setNasaPhoto] = useState({})
     const date = useSelector(state => state.date)
     const isLoading = useSelector(state => state.isLoading)
-    const lastPost = useSelector(state => state.lastPost)
 
 
 
     useEffect(() => {
+        if(!props.match.params.date){
             loadEntity()
+        }
 
     }, [])
 
@@ -51,7 +52,6 @@ export default function NasaPhoto(props) {
                 dispatch({ type: 'SET_DATE', date: data.date })
             })
             .catch((error) => {
-                dispatch({ type: 'SET_DATE', date: lastPost })
             })
 
         dispatch({ type: 'SET_LOADING', isLoading: false })
