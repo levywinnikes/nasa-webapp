@@ -1,12 +1,20 @@
 import {createStore} from 'redux'
 
 
+const takeLastPost = () => {
+    const last = new Date();
+    var newDate = null
+    last.setDate(last.getDate())
+    newDate = new Intl.DateTimeFormat('fr-CA').format(Date.parse(last))
+    return newDate;
+}
 
 
 const INITIAL_STATE = {
     date: null,
     isLoading: false,
-    lastPost: null,
+    firstPost: "1995-06-16",  
+    lastPost: takeLastPost()  
 };
 
 function nasaStore(state = INITIAL_STATE, action){

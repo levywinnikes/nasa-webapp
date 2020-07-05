@@ -1,35 +1,37 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
-const takeLastPost = () => {
-    const last = new Date();
-    var newDate = null
-    last.setDate(last.getDate())
-    newDate = new Intl.DateTimeFormat('fr-CA').format(Date.parse(last))
-
-    return newDate;
-}
 
 
 export default function NavBar() {
 
-    const [calendarDate, setCalendarDate] = useState(null)
     const storeDate = useSelector(state => state.date)
     const isLoadingStore = useSelector(state => state.isLoading)
+    const firstPost = useSelector(state => state.firstPost)
+    const lastPost = useSelector(state => state.lastPost)
+    const selectedDate = useSelector(state => state.date)
+    const [calendarDate, setCalendarDate] = useState(lastPost)
+    const [errorMessage, setErrorMessage] = useState("")
     const dispatch = useDispatch()
-    const lastPost = takeLastPost()
 
 
-    
 
-    console.log(lastPost + "AQUI")
-
-  
-
-
-    function changeDate(event){
+    function changeDate(event) {
+        checkDateInput(event.target.value)
         const newDate = event.target.value
         setCalendarDate(newDate)
+
+    }
+
+    function checkDateInput(inputValue) {
+        const inputDate = new Date(inputValue);
+        const lastDate = new Date(lastPost)
+        const firstDate = new Date(firstPost)
+
+        if (inputDate < firstDate) { setErrorMessage(`The first date is less than ${firstPost}`) }
+        else if (inputDate > lastDate) { setErrorMessage(`The last date is greater than ${lastPost}`) }
+        else setErrorMessage("")
+
     }
 
     function prevDate() {
@@ -49,7 +51,7 @@ export default function NavBar() {
 
     }
 
-    function goDate(){
+    function goDate() {
         dispatch({ type: 'SET_DATE', date: calendarDate })
     }
 
@@ -58,13 +60,27 @@ export default function NavBar() {
         dispatch({ type: 'SET_DATE', date: lastPost })
     }
 
+    function first() {
+        dispatch({ type: 'SET_DATE', date: firstPost })
+    }
+
 
     const isLastPost = () => storeDate === lastPost || isLoadingStore === true ? true : false
+    const isFirstPost = () => storeDate === firstPost || isLoadingStore === true ? true : false
+    const isValidDate = () => {
+        const inputDate = new Date(calendarDate);
+        const lastDate = new Date(lastPost)
+        const firstDate = new Date(firstPost)
 
-    const isLoading = () => isLoadingStore === true ? true : false
+        console.log(console.log(calendarDate) + "  " + console.log(selectedDate))
 
-    
-    
+        if (isNaN(inputDate.getDate()) || isLoadingStore === true || inputDate < firstDate || inputDate > lastDate || calendarDate === selectedDate) {
+            return true
+        }
+        else {
+            return false
+        }
+    }
 
 
 
@@ -72,15 +88,20 @@ export default function NavBar() {
     return (
         <div className="navbar">
             <ul>
-                <li><input onChange = {(e) => changeDate(e)} type = "date" value = {calendarDate}></input></li>
-                <li><button disabled = {isLoading()} onClick={() => goDate()}>Go</button></li>
-                <li><button disabled = {isLoading()} onClick={() => prevDate()}>Prev</button></li>
-                <li><button disabled = {isLastPost()} onClick={() => last()}>Last</button></li>
-                <li><button disabled = {isLastPost()} onClick={() => nextDate()}>Next</button></li>
-
+                <li className="menu-item"><p>Set a date to navigate: </p></li>
+                <li className="menu-item">
+                    <div className="input-group">
+                        <div className="error-message">{`${errorMessage}`}</div>
+                        <input onChange={(e) => changeDate(e)} type="date" value={calendarDate}></input>
+                    </div>
+                </li>
+                <li className="menu-item"><button disabled={isValidDate()} onClick={() => goDate()}>Go</button></li>
+                <li className="menu-item"><button disabled={isFirstPost()} onClick={() => first()}>First</button></li>
+                <li className="menu-item"><button disabled={isFirstPost()} onClick={() => prevDate()}>Prev</button></li>
+                <li className="menu-item"><button disabled={isLastPost()} onClick={() => nextDate()}>Next</button></li>
+                <li className="menu-item"><button disabled={isLastPost()} onClick={() => last()}>Last</button></li>
+                <li className= "menu-item created-by">Created by André L. Scarpim Winnikes </li>
             </ul>
-
-
         </div>
     )
 }

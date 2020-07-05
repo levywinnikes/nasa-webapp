@@ -2,21 +2,14 @@ import React, { useEffect, useState } from 'react'
 import ApiNasa from "../../services/nasa-api"
 import { useSelector, useDispatch } from 'react-redux'
 
-const takeLastPost = () => {
-    const last = new Date();
-    var newDate = null
-    last.setDate(last.getDate())
-    newDate = new Intl.DateTimeFormat('fr-CA').format(Date.parse(last))
-    return newDate;
-}
 
-export default function TesteApi() {
+export default function NasaPhoto() {
     const dispatch = useDispatch()
     const apiKey = "caAtJWtk07G83BJP6T5w5zwWVURksPCbs468353t"
     const [nasaPhoto, setNasaPhoto] = useState({})
     const date = useSelector(state => state.date)
     const isLoading = useSelector(state => state.isLoading)
-    const lastPost = takeLastPost()
+    const lastPost = useSelector(state => state.lastPost)
 
 
 
@@ -38,8 +31,11 @@ export default function TesteApi() {
             const data = response.data
             dispatch({ type: 'SET_DATE', date: data.date })
             setNasaPhoto(data)
+        console.log(data)
+
         })
         dispatch({ type: 'SET_LOADING', isLoading: false })
+
 
     }
 
@@ -54,7 +50,6 @@ export default function TesteApi() {
             })
             .catch((error) => {
                 dispatch({ type: 'SET_DATE', date: lastPost })
-
             })
 
         dispatch({ type: 'SET_LOADING', isLoading: false })
@@ -84,7 +79,7 @@ export default function TesteApi() {
                     </div>
 
                     {nasaPhoto.media_type === 'image' ? (
-                        <img className="media" src={nasaPhoto.hdurl} alt="Bright Planetary Nebula NGC 7027 from Hubble"></img>
+                        <img className="media" src={nasaPhoto.hdurl} alt={nasaPhoto.title}></img>
 
                     ) : (
                             <iframe
