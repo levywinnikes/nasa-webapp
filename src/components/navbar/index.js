@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 
@@ -56,7 +56,7 @@ export default function NavBar() {
     }
 
 
-    function last() {
+    function last() {    
         dispatch({ type: 'SET_DATE', date: lastPost })
     }
 
@@ -72,7 +72,6 @@ export default function NavBar() {
         const lastDate = new Date(lastPost)
         const firstDate = new Date(firstPost)
 
-        console.log(console.log(calendarDate) + "  " + console.log(selectedDate))
 
         if (isNaN(inputDate.getDate()) || isLoadingStore === true || inputDate < firstDate || inputDate > lastDate || calendarDate === selectedDate) {
             return true

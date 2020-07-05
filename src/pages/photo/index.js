@@ -3,7 +3,7 @@ import ApiNasa from "../../services/nasa-api"
 import { useSelector, useDispatch } from 'react-redux'
 
 
-export default function NasaPhoto() {
+export default function NasaPhoto(props) {
     const dispatch = useDispatch()
     const apiKey = "caAtJWtk07G83BJP6T5w5zwWVURksPCbs468353t"
     const [nasaPhoto, setNasaPhoto] = useState({})
@@ -14,7 +14,13 @@ export default function NasaPhoto() {
 
 
     useEffect(() => {
-        loadEntity()
+        if (!props.match.params.date) {
+            loadEntity()
+
+        }
+        else {
+            urlChangeDate()
+        }
 
     }, [])
 
@@ -23,23 +29,20 @@ export default function NasaPhoto() {
 
     }, [date])
 
-
     async function loadEntity() {
         dispatch({ type: 'SET_LOADING', isLoading: true })
-            await ApiNasa.get(`planetary/apod?api_key=${apiKey}`)
-        .then((response)=> {
-            const data = response.data
-            dispatch({ type: 'SET_DATE', date: data.date })
-            setNasaPhoto(data)
-        console.log(data)
+        await ApiNasa.get(`planetary/apod?api_key=${apiKey}`)
+            .then((response) => {
+                const data = response.data
+                dispatch({ type: 'SET_DATE', date: data.date })
+                setNasaPhoto(data)
 
-        })
+            })
         dispatch({ type: 'SET_LOADING', isLoading: false })
 
 
     }
 
-    
     async function changeDate() {
         dispatch({ type: 'SET_LOADING', isLoading: true })
         await ApiNasa.get(`planetary/apod?api_key=${apiKey}&date=${date}`)
@@ -54,6 +57,11 @@ export default function NasaPhoto() {
 
         dispatch({ type: 'SET_LOADING', isLoading: false })
 
+    }
+
+    async function urlChangeDate() {
+        const urlParamDate = props.match.params.date.slice(5)
+        dispatch({ type: 'SET_DATE', date: urlParamDate })
     }
 
 

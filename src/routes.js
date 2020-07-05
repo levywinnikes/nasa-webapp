@@ -12,6 +12,8 @@ export default function Routes() {
             <NavBar/>
             <Switch>
                 <Route path="/" component={NasaPhoto} exact></Route>
+                <Route path="/date/:date" component={NasaPhoto} exact></Route>
+
             </Switch>
         </BrowserRouter>
     )
