@@ -1,5 +1,6 @@
-import React, { useState} from 'react'
+import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 
 
@@ -12,7 +13,6 @@ export default function NavBar() {
     const selectedDate = useSelector(state => state.date)
     const [calendarDate, setCalendarDate] = useState(lastPost)
     const [errorMessage, setErrorMessage] = useState("")
-    const dispatch = useDispatch()
 
 
 
@@ -39,34 +39,25 @@ export default function NavBar() {
         var newDate = null
         newDate = new Intl.DateTimeFormat('fr-CA').format(Date.parse(yesterday))
 
-        dispatch({ type: 'SET_DATE', date: newDate })
+        return newDate
     }
+    const getPrevDate = prevDate()
+
 
     function nextDate() {
         const tomorrow = new Date(storeDate);
         var newDate = null
         tomorrow.setDate(tomorrow.getDate() + 2)
         newDate = new Intl.DateTimeFormat('fr-CA').format(Date.parse(tomorrow))
-        dispatch({ type: 'SET_DATE', date: newDate })
 
+        return newDate
     }
-
-    function goDate() {
-        dispatch({ type: 'SET_DATE', date: calendarDate })
-    }
+    const getNextDate = nextDate()
 
 
-    function last() {    
-        dispatch({ type: 'SET_DATE', date: lastPost })
-    }
 
-    function first() {
-        dispatch({ type: 'SET_DATE', date: firstPost })
-    }
-
-
-    const isLastPost = () => storeDate === lastPost || isLoadingStore === true ? true : false
-    const isFirstPost = () => storeDate === firstPost || isLoadingStore === true ? true : false
+    const isLastPost = () => storeDate === lastPost || isLoadingStore === true ? false : true
+    const isFirstPost = () => storeDate === firstPost || isLoadingStore === true ? false : true
     const isValidDate = () => {
         const inputDate = new Date(calendarDate);
         const lastDate = new Date(lastPost)
@@ -74,10 +65,10 @@ export default function NavBar() {
 
 
         if (isNaN(inputDate.getDate()) || isLoadingStore === true || inputDate < firstDate || inputDate > lastDate || calendarDate === selectedDate) {
-            return true
+            return false
         }
         else {
-            return false
+            return true
         }
     }
 
@@ -94,12 +85,28 @@ export default function NavBar() {
                         <input onChange={(e) => changeDate(e)} type="date" value={calendarDate}></input>
                     </div>
                 </li>
-                <li className="menu-item"><button disabled={isValidDate()} onClick={() => goDate()}>Go</button></li>
-                <li className="menu-item"><button disabled={isFirstPost()} onClick={() => first()}>First</button></li>
-                <li className="menu-item"><button disabled={isFirstPost()} onClick={() => prevDate()}>Prev</button></li>
-                <li className="menu-item"><button disabled={isLastPost()} onClick={() => nextDate()}>Next</button></li>
-                <li className="menu-item"><button disabled={isLastPost()} onClick={() => last()}>Last</button></li>
-                <li className= "menu-item created-by">Created by André L. Scarpim Winnikes </li>
+                <li className="menu-item"> {isValidDate() ?
+                    (<Link to={`/date/date:${calendarDate}`}>Go</Link>) :
+                    (<button disabled >Go</button>)}
+                </li>
+                <li className="menu-item"> {isFirstPost() ?
+                    (<Link to={`/date/date:${firstPost}`}>First</Link>) :
+                    (<button disabled >First</button>)}
+                </li>
+                <li className="menu-item"> {isFirstPost() ?
+                    (<Link to={`/date/date:${getPrevDate}`}>Prev</Link>) :
+                    (<button disabled >Prev</button>)}
+                </li>
+                <li className="menu-item"> {isLastPost() ?
+                    (<Link to={`/date/date:${getNextDate}`}>Next</Link>) :
+                    (<button disabled >Next</button>)}
+                </li>
+                <li className="menu-item"> {isLastPost() ?
+                    (<Link to={`/date/date:${lastPost}`}>Last</Link>) :
+                    (<button disabled >Last</button>)}
+                </li>
+
+                <li className="menu-item created-by">Created by André L. Scarpim Winnikes </li>
             </ul>
         </div>
     )

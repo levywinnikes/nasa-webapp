@@ -14,19 +14,18 @@ export default function NasaPhoto(props) {
 
 
     useEffect(() => {
-        if (!props.match.params.date) {
             loadEntity()
-
-        }
-        else {
-            urlChangeDate()
-        }
 
     }, [])
 
+
+    useEffect(() => {
+        urlChangeDate()
+
+    }, [props.match.params.date])
+
     useEffect(() => {
         changeDate()
-
     }, [date])
 
     async function loadEntity() {
@@ -60,8 +59,10 @@ export default function NasaPhoto(props) {
     }
 
     async function urlChangeDate() {
-        const urlParamDate = props.match.params.date.slice(5)
-        dispatch({ type: 'SET_DATE', date: urlParamDate })
+        if(props.match.params.date){
+            const urlParamDate = props.match.params.date.slice(5)
+            dispatch({ type: 'SET_DATE', date: urlParamDate })
+        }
     }
 
 
