@@ -77,32 +77,34 @@ export default function NavBar() {
     return (
         <div className="navbar">
             <ul>
-                <li className="menu-item"><p>Set a date to navigate: </p></li>
-                <li className="menu-item">
+                <li className="menu-item menu-item-text"><p>Set a date to navigate: </p></li>
+                <li className="menu-item menu-input">
                     <div className="input-group">
                         <div className="error-message">{`${errorMessage}`}</div>
                         <input onChange={(e) => changeDate(e)} type="date" value={calendarDate}></input>
                     </div>
                 </li>
-                <li className="menu-item"> {isValidDate() ?
+                <li className="menu-item menu-button-go"> {isValidDate() ?
                     (<Link to={`/date/date:${calendarDate}`}>Go</Link>) :
-                    (<button disabled >Go</button>)}
+                    (<div className="disabled-button">Go</div>)}
                 </li>
-                <li className="menu-item"> {isFirstPost() ?
+                <li className="menu-item menu-button-first"> {isFirstPost() ?
                     (<Link to={`/date/date:${firstPost}`}>First</Link>) :
-                    (<button disabled >First</button>)}
+                    (<div className="disabled-button">First</div>)}
                 </li>
-                <li className="menu-item"> {isFirstPost() ?
+                <li className="menu-item menu-button-prev"> {isFirstPost() ?
                     (<Link to={`/date/date:${getPrevDate}`}>Prev</Link>) :
-                    (<button disabled >Prev</button>)}
+                    (<div className="disabled-button">Prev</div>)}
+
                 </li>
-                <li className="menu-item"> {isLastPost() ?
+                <li className="menu-item menu-button-next"> {isLastPost() ?
                     (<Link to={`/date/date:${getNextDate}`}>Next</Link>) :
-                    (<button disabled >Next</button>)}
+                    (<div className="disabled-button">Next</div>)}
                 </li>
-                <li className="menu-item"> {isLastPost() ?
+                <li className="menu-item menu-button-last"> {isLastPost() ?
                     (<Link to={`/date/date:${lastPost}`}>Last</Link>) :
-                    (<button disabled >Last</button>)}
+                    (<div className="disabled-button">Last</div>)}
+
                 </li>
 
                 <li className="menu-item created-by">Created by André L. Scarpim Winnikes </li>

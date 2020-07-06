@@ -13,7 +13,7 @@ export default function NasaPhoto(props) {
 
 
     useEffect(() => {
-        if(!props.match.params.date){
+        if (!props.match.params.date) {
             loadEntity()
         }
 
@@ -58,7 +58,7 @@ export default function NasaPhoto(props) {
     }
 
     async function urlChangeDate() {
-        if(props.match.params.date){
+        if (props.match.params.date) {
             const urlParamDate = props.match.params.date.slice(5)
             dispatch({ type: 'SET_DATE', date: urlParamDate })
         }
@@ -87,21 +87,28 @@ export default function NasaPhoto(props) {
                     </div>
 
                     {nasaPhoto.media_type === 'image' ? (
-                        <img className="media" src={nasaPhoto.hdurl} alt={nasaPhoto.title}></img>
+                        <>
+                            <img className="media" src={nasaPhoto.url} alt={nasaPhoto.title}></img>
+                            <p className="photo-explanation">{nasaPhoto.explanation}</p>
+                        </>
+
 
                     ) : (
+                        <>
+
                             <iframe
                                 src={nasaPhoto.url}
                                 title="nasa-video"
                                 gesture="media"
                                 allowFullScreen
-                                className="media"
+                                className="video"
                             />
+                            <p className="video-explanation">{nasaPhoto.explanation}</p>
+                            </>
 
                         )}
 
 
-                    <p className="explanation">{nasaPhoto.explanation}</p>
                 </div>
             </>
         );

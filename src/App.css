@@ -1,179 +1,128 @@
 body {
   box-sizing: border-box;
   margin: 0;
-  padding-top: 120px;
   width: 100%;
   height: 100%;
+  padding-top: 200px;
   background-image: url("assets/img/sky-space-milky-way-stars-110854.jpg");
 }
 
+.App {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 30px;
+}
 
-.navbar{
-  display: inline-block;
-  position: fixed;
+.navbar {
   top: 0;
+  position: fixed;
   width: 100%;
-  height: 120px;
-  line-height: 80px;
+  background-color: #000;
+  grid-column-start: 1;
+  grid-column-end: 5;
   text-align: center;
-  background-color: black;
 }
 
-.navbar p{
-  color: #d9d9d9;
-  padding: 5px;
-  margin: auto
-
-}
-
-.menu-item{
+ .menu-item {
   display: inline-block;
-  text-align: center;
-  line-height: 40px; 
-}
-
-.input-group{
-  line-height: 15px;
-}
-
-
-
-.navbar a{
-  text-decoration: none;
-  background-color: white;
-  color: black;
-  padding: 15px;
+  color: #FFF;
   margin: 5px;
-  border-radius: 10px;
-
 }
 
-.navbar a:hover{
+.menu-item a{
+  background-color: #FFF;
   text-decoration: none;
-
-  cursor: pointer;
-  padding: 25px;
-
+  padding: 5px;
+  border-radius: 10%;
 }
 
-.navbar button:disabled{
+.menu-item a:hover{
+  background-color: #FFF;
+  text-decoration: none;
+  padding: 10px;
+  border-radius: 10%;
+}
+
+.disabled-button{
+  background-color: #8c8c8c;
+  color: #404040;
+  padding: 5px;
+  border-radius: 10%;
   cursor: not-allowed;
-  background-color: #8B8989;
-  color: black;
-  padding: 15px;
-  margin: 5px;
-  border-radius: 10px;
 }
 
-.content{
-  background-color: black;
+
+.content {
+  display: grid;
   margin: auto;
-  width: 90%;
-
+  width: 95%;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 0px;
+  background-color: #000;
+  grid-column-start: 1;
+  grid-column-end: 5;
 }
 
-.media{
-  padding: 5%;
-  margin: auto;
-  width: 90%;
-  min-height: 300px;
-
-}
-
-.date-panel{
-
+.title {
+  background-color: #000;
+  color: #FFF;
+  grid-column-start: 1;
+  grid-column-end: 5;
   text-align: center;
-
 }
 
-.selected-date{
-  background-color: white;
-  width: 100px;
-  height: 40px;
-  font-weight: bold;
-  border-radius: 5px;
-  display: inline-block;
-  vertical-align: middle;
-  margin: 10px;
-
-  padding-bottom: 30px;
-  
-
+.date-panel {
+  background-color: #000;
+  grid-column-start: 1;
+  grid-column-end: 5;
+  text-align: center;
 }
 
-.selected-date p {
-  vertical-align: text-top;
+.selected-date {
+  background-color: #FFF;
+  width: 50%;
+  margin: auto;
 }
 
-.prev-date{
-  display: inline-block;
+.media {
+  grid-column-start: 1;
+  grid-column-end: 5;
+  width: 90%;
+  margin: auto;
 }
 
-.prev-date a{
-  display: block;
-  text-decoration: none;
-  background-color: white;
-  height: 30px;
-  width: 80px;
-  border-radius: 5px;
-  line-height: 30px;
+.photo-explanation {
+  background-color: #000;
+  color: #FFF;
+  grid-column-start: 1;
+  grid-column-end: 5;
+  margin: 20px;
 }
 
-
-.next-date{
-  display: inline-block;
+.video {
+  grid-column-start: 1;
+  grid-column-end: 5;
+  width: 90%;
+  height: 500px;
+  margin: auto;
 }
 
-.next-date a{
-  display: block;
-  text-decoration: none;
-  background-color: white;
-  height: 30px;
-  width: 80px;
-  border-radius: 5px;
-  line-height: 30px;
+.video-explanation {
+  background-color: #000;
+  color: #FFF;
+  grid-column-start: 1;
+  grid-column-end: 5;
+  margin: 20px;
 }
-
-.next-date a:hover{
-  padding: 5px;
-
-}
-
-.prev-date a:hover{
-  padding: 5px;
-
-}
-
-.selected-date p{
-    color: black;
-    text-align: center;
-    padding: 10px;
-}
-
-.explanation{
-  padding: 15px;
-  font-weight: bold;
-  color: #d9d9d9;
-}
-
 
 .error-message{
-  display: block;
-  color: #FF0000 ;  
-  font-size: 10px ;
+  color: #fc2c03;
+  font-size: 8px;
+  padding-top: 1px;
 }
 
 .created-by{
-  display: inline-block;
-  color: #FFF;
-  font-size: 10px ;
-  margin-left: 50px;
-}
-
-
-
-h1{
-  color: white;
-  text-align: center;
-  padding: 20px;
+  position: absolute;
+  top: 0;
+  right: 10px;
 }
