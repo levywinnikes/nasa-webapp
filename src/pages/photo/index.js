@@ -69,7 +69,7 @@ export default function NasaPhoto(props) {
 
     if (!nasaPhoto) return <div />
 
-    if (isLoading) return (<h1>Loading...</h1>)
+    if (isLoading) return ( <div className = "loading-page"><h1>Loading...</h1></div> )
 
     else
 
