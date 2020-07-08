@@ -14,7 +14,9 @@ const INITIAL_STATE = {
     date: null,
     isLoading: false,
     firstPost: "1995-06-16",  
-    lastPost: takeLastPost()  
+    lastPost: takeLastPost(),
+    apiKey:  "caAtJWtk07G83BJP6T5w5zwWVURksPCbs468353t"
+
 };
 
 function nasaStore(state = INITIAL_STATE, action){

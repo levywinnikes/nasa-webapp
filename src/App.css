@@ -4,6 +4,7 @@ body {
   width: 100%;
   height: 100%;
   padding-top: 200px;
+  padding-bottom: 100px;
   background-image: url("assets/img/sky-space-milky-way-stars-110854.jpg");
 }
 
@@ -23,28 +24,33 @@ body {
   text-align: center;
 }
 
- .menu-item {
+.footer {
+  bottom: 0;
+  position: fixed;
+  height: 75px;
+  width: 100%;
+  background-color: #000;
+  grid-column-start: 1;
+  grid-column-end: 5;
+  text-align: center;
+}
+
+.menu-item {
   display: inline-block;
   color: #FFF;
   margin: 5px;
 }
 
-.menu-item a{
+.button {
   background-color: #FFF;
   text-decoration: none;
   color: #000;
   padding: 5px;
   border-radius: 10%;
+  cursor: pointer;
 }
 
-.menu-item a:hover{
-  background-color: #FFF;
-  text-decoration: none;
-  padding: 10px;
-  border-radius: 10%;
-}
-
-.disabled-button{
+.button:disabled {
   background-color: #8c8c8c;
   color: #404040;
   padding: 5px;
@@ -52,6 +58,44 @@ body {
   cursor: not-allowed;
 }
 
+.button:disabled:hover {
+  background-color: #8c8c8c;
+  color: #404040;
+  padding: 5px;
+  border-radius: 10%;
+  cursor: not-allowed;
+}
+
+.button:hover {
+  background-color: #FFF;
+  text-decoration: none;
+  color: #000;
+  padding: 5px;
+  border-radius: 10%;
+}
+
+.menu-item a {
+  background-color: #FFF;
+  text-decoration: none;
+  color: #000;
+  padding: 5px;
+  border-radius: 10%;
+}
+
+.menu-item a:hover {
+  background-color: #FFF;
+  text-decoration: none;
+  padding: 10px;
+  border-radius: 10%;
+}
+
+.disabled-button {
+  background-color: #8c8c8c;
+  color: #404040;
+  padding: 5px;
+  border-radius: 10%;
+  cursor: not-allowed;
+}
 
 .content {
   display: grid;
@@ -116,30 +160,118 @@ body {
   margin: 20px;
 }
 
-.error-message{
+.error-message {
   color: #fc2c03;
   font-size: 8px;
   padding-top: 1px;
 }
 
-.created-by{
+.created-by {
   position: absolute;
-  top: 0;
+  top: 25%;
   right: 10px;
 }
 
-.loading-page{
+.loading-page {
   grid-column-start: 1;
   grid-column-end: 5;
   margin: auto;
 }
 
-.loading-page h1{
+.loading-page h1 {
   color: #FFF;
 }
 
-.github-button{
+.github-button {
   position: absolute;
-  top: 12px;
+  top: 25%;
   left: 10px;
+}
+
+.mini-posts {
+  display: grid;
+  margin: auto;
+  width: 90%;
+  grid-column-start: 1;
+  grid-column-end: 6;
+}
+
+.mini-post {
+  width: 100%;
+  padding: 10px;
+  background-color: #000;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  margin: 10px;
+}
+
+.mini-post h3 {
+  grid-column-start: 2;
+  grid-column-end: 5;
+  color: #FFF;
+}
+
+.mini-post-explanation {
+  color: #FFF;
+  grid-column-start: 2;
+  grid-column-end: 5;
+  width: 100%;
+}
+
+.mini-post-date {
+  grid-column-start: 1;
+  grid-column-end: 1;
+  grid-row-start: 1;
+  grid-row-end: 1;
+  width: 70%;
+  text-align: center;
+  margin: auto;
+  color: #000;
+  background-color: #FFF;
+}
+
+.mini-post-date p {
+  color: #000;
+}
+
+.mini-post img {
+  vertical-align: top;
+  float: inline-start;
+  width: auto;
+  height: auto;
+  max-width: 90%;
+  grid-column-start: 1;
+  grid-column-end: 1;
+  grid-row-start: 2;
+  grid-row-end: 4;
+}
+
+.mini-post-video{
+  max-width: 90%;
+
+}
+
+.mini-post-video  h3{
+  grid-column-start: 1;
+  grid-column-end: 1;
+
+}
+
+.mini-post-video  p{
+  grid-column-start: 1;
+  grid-column-end: 1;
+  color: #FFF;
+
+}
+
+.mini-post-read-more {
+  text-align: center;
+  height: 20px;
+  width: 100px;
+  grid-column-start: 2;
+  grid-column-end: 2;
+}
+
+.mini-post-read-more:hover {
+  padding: 10px;
 }

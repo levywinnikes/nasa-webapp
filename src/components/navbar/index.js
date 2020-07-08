@@ -57,6 +57,13 @@ export default function NavBar() {
 
     const isLastPost = () => storeDate === lastPost || isLoadingStore === true ? false : true
     const isFirstPost = () => storeDate === firstPost || isLoadingStore === true ? false : true
+    const isValidDatePrev = () => storeDate === firstPost || isLoadingStore === true || selectedDate === null ? false : true
+    const isValidDateNext = () => storeDate === lastPost || isLoadingStore === true || selectedDate === null ? false : true
+    const isLoading = () => isLoadingStore === true ? false : true
+
+
+
+
     const isValidDate = () => {
         const inputDate = new Date(calendarDate);
         const lastDate = new Date(lastPost)
@@ -71,9 +78,6 @@ export default function NavBar() {
         }
     }
 
-
-
-
     return (
         <div className="navbar">
             <ul>
@@ -85,31 +89,33 @@ export default function NavBar() {
                     </div>
                 </li>
                 <li className="menu-item menu-button-go"> {isValidDate() ?
-                    (<Link to={`/date/date:${calendarDate}`}>Go</Link>) :
+                    (<Link to={`/date/date=${calendarDate}`}>Go</Link>) :
                     (<div className="disabled-button">Go</div>)}
                 </li>
                 <li className="menu-item menu-button-first"> {isFirstPost() ?
-                    (<Link to={`/date/date:${firstPost}`}>First</Link>) :
+                    (<Link to={`/date/date=${firstPost}`}>First</Link>) :
                     (<div className="disabled-button">First</div>)}
                 </li>
-                <li className="menu-item menu-button-prev"> {isFirstPost() ?
-                    (<Link to={`/date/date:${getPrevDate}`}>Prev</Link>) :
+                <li className="menu-item menu-button-prev"> {isValidDatePrev() ?
+                    (<Link to={`/date/date=${getPrevDate}`}>Prev</Link>) :
                     (<div className="disabled-button">Prev</div>)}
 
                 </li>
-                <li className="menu-item menu-button-next"> {isLastPost() ?
-                    (<Link to={`/date/date:${getNextDate}`}>Next</Link>) :
+                <li className="menu-item menu-button-next"> {isValidDateNext() ?
+                    (<Link to={`/date/date=${getNextDate}`}>Next</Link>) :
                     (<div className="disabled-button">Next</div>)}
                 </li>
                 <li className="menu-item menu-button-last"> {isLastPost() ?
-                    (<Link to={`/date/date:${lastPost}`}>Last</Link>) :
+                    (<Link to={`/date/date=${lastPost}`}>Last</Link>) :
                     (<div className="disabled-button">Last</div>)}
-
+                </li>
+                <li className="menu-item calendar-button"> {isLoading() ?
+                    (<Link to={`/listPosts`}>List posts</Link>) :
+                    (<div className="disabled-button">List posts</div>)}
                 </li>
 
-                <li className="menu-item created-by">Created by André L. Scarpim Winnikes </li>
 
-                <li className="menu-item github-button"><a href = "https://github.com/levywinnikes/nasa-webapp">Github</a></li>
+
 
             </ul>
         </div>

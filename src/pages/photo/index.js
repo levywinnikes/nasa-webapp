@@ -5,28 +5,29 @@ import { useSelector, useDispatch } from 'react-redux'
 
 export default function NasaPhoto(props) {
     const dispatch = useDispatch()
-    const apiKey = "caAtJWtk07G83BJP6T5w5zwWVURksPCbs468353t"
     const [nasaPhoto, setNasaPhoto] = useState({})
-    const date = useSelector(state => state.date)
     const isLoading = useSelector(state => state.isLoading)
+    const apiKey = useSelector(state => state.apiKey)
+
 
 
 
     useEffect(() => {
         if (!props.match.params.date) {
+            console.log("loadEntity")
             loadEntity()
+        }
+        else {
+            changeDate()
         }
 
     }, [])
 
-    useEffect(() => {
-        urlChangeDate()
-
-    }, [props.match.params.date])
 
     useEffect(() => {
         changeDate()
-    }, [date])
+    }, [props.match.params.date])
+
 
     async function loadEntity() {
         dispatch({ type: 'SET_LOADING', isLoading: true })
@@ -43,25 +44,21 @@ export default function NasaPhoto(props) {
     }
 
     async function changeDate() {
+        const urlParamDate = props.match.params.date
+
         dispatch({ type: 'SET_LOADING', isLoading: true })
-        await ApiNasa.get(`planetary/apod?api_key=${apiKey}&date=${date}`)
+        await ApiNasa.get(`planetary/apod?api_key=${apiKey}&${urlParamDate}`)
             .then((response) => {
                 const data = response.data
                 setNasaPhoto(data)
                 dispatch({ type: 'SET_DATE', date: data.date })
             })
             .catch((error) => {
+                console.warn(error)
             })
 
         dispatch({ type: 'SET_LOADING', isLoading: false })
 
-    }
-
-    async function urlChangeDate() {
-        if (props.match.params.date) {
-            const urlParamDate = props.match.params.date.slice(5)
-            dispatch({ type: 'SET_DATE', date: urlParamDate })
-        }
     }
 
 
@@ -69,7 +66,7 @@ export default function NasaPhoto(props) {
 
     if (!nasaPhoto) return <div />
 
-    if (isLoading) return ( <div className = "loading-page"><h1>Loading...</h1></div> )
+    if (isLoading) return (<div className="loading-page"><h1>Loading...</h1></div>)
 
     else
 
@@ -94,16 +91,16 @@ export default function NasaPhoto(props) {
 
 
                     ) : (
-                        <>
+                            <>
 
-                            <iframe
-                                src={nasaPhoto.url}
-                                title="nasa-video"
-                                gesture="media"
-                                allowFullScreen
-                                className="video"
-                            />
-                            <p className="video-explanation">{nasaPhoto.explanation}</p>
+                                <iframe
+                                    src={nasaPhoto.url}
+                                    title="nasa-video"
+                                    gesture="media"
+                                    allowFullScreen
+                                    className="video"
+                                />
+                                <p className="video-explanation">{nasaPhoto.explanation}</p>
                             </>
 
                         )}
