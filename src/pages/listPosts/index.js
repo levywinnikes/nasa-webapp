@@ -32,7 +32,7 @@ export default function ListPosts() {
 
 
         dispatch({ type: 'SET_LOADING', isLoading: true })
-        await ApiNasa.get(`planetary/apod?api_key=${apiKey}&start_date=${firstDate}&end_date=${lastDate}`)
+        await ApiNasa.get(`planetary/apod?api_key=${apiKey}&start_date=${firstDate}&end_${lastDate}`)
             .then((response) => {
                 const data = response.data
                 setMonthPost(data)

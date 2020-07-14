@@ -8,6 +8,7 @@ export default function NasaPhoto(props) {
     const [nasaPhoto, setNasaPhoto] = useState(null)
     const isLoading = useSelector(state => state.isLoading)
     const apiKey = useSelector(state => state.apiKey)
+    const [errorMessage, setErrorMessage] = useState("")
 
 
     useEffect(() => {
@@ -28,8 +29,8 @@ export default function NasaPhoto(props) {
 
 
 
-  //  useEffect(() => !props.match.params.date ? loadEntity(): changeDate(), [])
-  //  useEffect(() =>  {changeDate()}, [props.match.params.date])
+    //  useEffect(() => !props.match.params.date ? loadEntity(): changeDate(), [])
+    //  useEffect(() =>  {changeDate()}, [props.match.params.date])
 
     async function loadEntity() {
         dispatch({ type: 'SET_LOADING', isLoading: true })
@@ -55,12 +56,21 @@ export default function NasaPhoto(props) {
             .then((response) => {
                 const data = response.data
                 setNasaPhoto(data)
-                dispatch({ type: 'SET_DATE', date: data.date })
             })
             .catch((error) => {
+                if (error.response.status === 404) {
+                    setNasaPhoto(null)
+                    setErrorMessage("Page not found, try next or prev page")
+                }
+                else {
+                    setErrorMessage("Failed to connect to server")
+                }
+
                 console.warn(error)
+
             })
 
+        dispatch({ type: 'SET_DATE', date: urlParamDate })
         dispatch({ type: 'SET_LOADING', isLoading: false })
 
     }
@@ -68,26 +78,34 @@ export default function NasaPhoto(props) {
 
 
 
-    if (!nasaPhoto && isLoading === false) return <div className="error-message">Failed to connect to server</div>
-
-    if (isLoading) return (<div className="loading-page"><h1>Loading...</h1></div>)
+    if (!nasaPhoto && isLoading === false)
+        return (
+            <div className="content">
+                <div className="error-message">
+                    <h1>
+                        {errorMessage}
+                    </h1>
+                </div>
+            </div>
+        )
 
     else
 
         return (
             <>
                 <div className="content">
-                    <h1 className="title">{nasaPhoto.title}</h1>
+                    <h1 className="title">{isLoading === false ? (nasaPhoto.title) : (<> Loading...</>)}</h1>
 
                     <div className="date-panel">
 
                         <div className="selected-date">
-                            <p>{nasaPhoto.date}</p>
+                            <p>{props.match.params.date  ? (props.match.params.date.slice(5))  : (isLoading === false ? (nasaPhoto.date) : (<> Loading </>) )}</p>
+
                         </div>
 
                     </div>
 
-                    {nasaPhoto.media_type === 'image' ? (
+                    {isLoading === false ? (nasaPhoto.media_type === 'image' ? (
                         <>
                             <img className="media" src={nasaPhoto.url} alt={nasaPhoto.title}></img>
                             <p className="photo-explanation">{nasaPhoto.explanation}</p>
@@ -107,7 +125,7 @@ export default function NasaPhoto(props) {
                                 <p className="video-explanation">{nasaPhoto.explanation}</p>
                             </>
 
-                        )}
+                        )) : (<></>)}
 
 
                 </div>

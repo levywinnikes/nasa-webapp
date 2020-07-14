@@ -1,4 +1,4 @@
-import React, { useState , useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 
@@ -12,8 +12,19 @@ export default function NavBar() {
     const lastPost = useSelector(state => state.lastPost)
     const selectedDate = useSelector(state => state.date)
     const pageSelected = useSelector(state => state.pageSelected)
-    const [calendarDate, setCalendarDate] = useState(lastPost)
+    const [calendarDate, setCalendarDate] = useState(lastPost.slice(5))
     const [errorMessage, setErrorMessage] = useState("")
+
+
+    useEffect(() => {
+        console.log(firstPost)
+        console.log(storeDate)
+    }, [])
+
+    useEffect(() => {
+        console.log(firstPost)
+        console.log(storeDate)
+    }, [storeDate])
 
 
     useEffect(() => {
@@ -41,23 +52,31 @@ export default function NavBar() {
 
     }
 
-    function prevDate() {
-        const yesterday = new Date(storeDate);
-        var newDate = null
-        newDate = new Intl.DateTimeFormat('fr-CA').format(Date.parse(yesterday))
 
-        return newDate
+    function prevDate() {
+        if (storeDate) {
+            const yesterday = new Date(storeDate);
+            var newDate = null
+            yesterday.setDate(yesterday.getDate() - 1)
+            newDate = new Intl.DateTimeFormat('fr-CA').format(Date.parse(yesterday))
+
+            return newDate
+        }
     }
     const getPrevDate = prevDate()
 
 
-    function nextDate() {
-        const tomorrow = new Date(storeDate);
-        var newDate = null
-        tomorrow.setDate(tomorrow.getDate() + 2)
-        newDate = new Intl.DateTimeFormat('fr-CA').format(Date.parse(tomorrow))
 
-        return newDate
+
+    function nextDate() {
+        if (storeDate) {
+            const tomorrow = new Date(storeDate);
+            var newDate = null
+            tomorrow.setDate(tomorrow.getDate() + 1)
+            newDate = new Intl.DateTimeFormat('fr-CA').format(Date.parse(tomorrow))
+
+            return newDate
+        }
     }
     const getNextDate = nextDate()
 
@@ -72,16 +91,18 @@ export default function NavBar() {
 
 
     const isValidDate = () => {
-        const inputDate = new Date(calendarDate);
-        const lastDate = new Date(lastPost)
-        const firstDate = new Date(firstPost)
+        if (selectedDate) {
+            const inputDate = new Date(calendarDate);
+            const lastDate = new Date(lastPost.slice(5))
+            const firstDate = new Date(firstPost.slice(5))
 
 
-        if (isNaN(inputDate.getDate()) || isLoadingStore === true || inputDate < firstDate || inputDate > lastDate || calendarDate === selectedDate) {
-            return false
-        }
-        else {
-            return true
+            if (isNaN(inputDate.getDate()) || isLoadingStore === true || inputDate < firstDate || inputDate > lastDate || calendarDate === selectedDate.slice(5)) {
+                return false
+            }
+            else {
+                return true
+            }
         }
     }
 
@@ -100,7 +121,7 @@ export default function NavBar() {
                     (<div className="disabled-button">Go</div>)}
                 </li>
                 <li className="menu-item menu-button-first"> {isFirstPost() ?
-                    (<Link to={`/date/date=${firstPost}`}>First</Link>) :
+                    (<Link to={`/date/${firstPost}`}>First</Link>) :
                     (<div className="disabled-button">First</div>)}
                 </li>
                 <li className="menu-item menu-button-prev"> {isValidDatePrev() ?
@@ -113,7 +134,7 @@ export default function NavBar() {
                     (<div className="disabled-button">Next</div>)}
                 </li>
                 <li className="menu-item menu-button-last"> {isLastPost() ?
-                    (<Link to={`/date/date=${lastPost}`}>Last</Link>) :
+                    (<Link to={`/date/${lastPost}`}>Last</Link>) :
                     (<div className="disabled-button">Last</div>)}
                 </li>
                 <li className="menu-item calendar-button"> {isDifferentPage() ?
