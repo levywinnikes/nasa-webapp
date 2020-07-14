@@ -14,8 +14,8 @@ export default function Routes() {
             <NavBar/>
             <Switch>
                 <Route path="/" component={NasaPhoto} exact></Route>
-                <Route path="/date/:date" component={NasaPhoto}></Route>
-                <Route parh = "/listPosts" component={ListPosts}></Route>
+                <Route path="/date/:date" component={NasaPhoto} ></Route>
+                <Route parh = "/listPosts" component={ListPosts} ></Route>
             </Switch>
             <Footer/>
         </BrowserRouter>

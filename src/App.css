@@ -5,7 +5,9 @@ body {
   height: 100%;
   padding-top: 200px;
   padding-bottom: 100px;
-  background-image: url("assets/img/sky-space-milky-way-stars-110854.jpg");
+  /*background-image: url("assets/img/sky-space-milky-way-stars-110854.jpg"); */
+  background-color: #0A0A0A;
+
 }
 
 .App {
@@ -18,7 +20,7 @@ body {
   top: 0;
   position: fixed;
   width: 100%;
-  background-color: #000;
+  background-color: #333533;
   grid-column-start: 1;
   grid-column-end: 5;
   text-align: center;
@@ -29,7 +31,7 @@ body {
   position: fixed;
   height: 75px;
   width: 100%;
-  background-color: #000;
+  background-color: #333533;
   grid-column-start: 1;
   grid-column-end: 5;
   text-align: center;
@@ -37,12 +39,12 @@ body {
 
 .menu-item {
   display: inline-block;
-  color: #FFF;
+  color: #F5CB5C;
   margin: 5px;
 }
 
 .button {
-  background-color: #FFF;
+  background-color: #CFDBD5;
   text-decoration: none;
   color: #000;
   padding: 5px;
@@ -67,15 +69,14 @@ body {
 }
 
 .button:hover {
-  background-color: #FFF;
+  background-color: #F5CB5C;
   text-decoration: none;
   color: #000;
-  padding: 5px;
   border-radius: 10%;
 }
 
 .menu-item a {
-  background-color: #FFF;
+  background-color: #CFDBD5;
   text-decoration: none;
   color: #000;
   padding: 5px;
@@ -83,9 +84,9 @@ body {
 }
 
 .menu-item a:hover {
-  background-color: #FFF;
+  background-color: #F5CB5C;
   text-decoration: none;
-  padding: 10px;
+  padding: 6px;
   border-radius: 10%;
 }
 
@@ -103,21 +104,21 @@ body {
   width: 95%;
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 0px;
-  background-color: #000;
+  background-color: #242423;
   grid-column-start: 1;
   grid-column-end: 5;
 }
 
 .title {
-  background-color: #000;
-  color: #FFF;
+  background-color: #242423;
+  color: #F5CB5C;
   grid-column-start: 1;
   grid-column-end: 5;
   text-align: center;
 }
 
 .date-panel {
-  background-color: #000;
+  background-color: #242423;
   grid-column-start: 1;
   grid-column-end: 5;
   text-align: center;
@@ -137,8 +138,8 @@ body {
 }
 
 .photo-explanation {
-  background-color: #000;
-  color: #FFF;
+  background-color: #242423;
+  color: #E8EDDF;
   grid-column-start: 1;
   grid-column-end: 5;
   margin: 20px;
@@ -153,7 +154,7 @@ body {
 }
 
 .video-explanation {
-  background-color: #000;
+  background-color: #242423;
   color: #FFF;
   grid-column-start: 1;
   grid-column-end: 5;
@@ -199,7 +200,7 @@ body {
 .mini-post {
   width: 100%;
   padding: 10px;
-  background-color: #000;
+  background-color: #242423;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   margin: 10px;
@@ -208,11 +209,11 @@ body {
 .mini-post h3 {
   grid-column-start: 2;
   grid-column-end: 5;
-  color: #FFF;
+  color: #F5CB5C;
 }
 
 .mini-post-explanation {
-  color: #FFF;
+  color: #E8EDDF;
   grid-column-start: 2;
   grid-column-end: 5;
   width: 100%;
@@ -284,7 +285,7 @@ body {
 
 .mini-post-small {
   padding: 10px;
-  background-color: #000;
+  background-color: #242423;
   margin: 10px;
 }
 
@@ -293,24 +294,21 @@ body {
 }
 
 .mini-post-small h3 {
-  color: #FFF;
+  color: #F5CB5C;
 
 }
 
 .mini-post-explanation-small {
-  color: #FFF;
+  color: #E8EDDF;
 }
 
 .mini-post-date-small {
  text-align: center;
-  color: #000;
-  background-color: #FFF;
+  color: #242423;
+  background-color: #E8EDDF;
 
 }
 
-.mini-post-date-small p {
-  background-color: #FFF;
-}
 
 .mini-post-image-small{
   text-align: center;
@@ -327,7 +325,6 @@ body {
   height: 185px;
 }
 
-.mini-post-video-small h3 {}
 
 .mini-post-video-small p {
   color: #FFF;
@@ -338,19 +335,23 @@ body {
   padding: 1px;
   width: 90%;
   text-align: center;
-  background-color: #FFF;
-  border-radius: 5%;
 }
 
 .mini-post-read-more-small a{
+  padding-left: 25%;
+  padding-right: 25%;
+  background-color: #FFF;
+  width: 90%;
   color: #000;
   text-decoration: none;
+  border-radius: 3%;
 }
 
-.mini-post-read-more-small:hover {}
 
 .mini-post-more-please{
   grid-column-start: 1;
   grid-column-end: 4;
 
 }
+
+

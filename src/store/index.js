@@ -15,7 +15,8 @@ const INITIAL_STATE = {
     isLoading: false,
     firstPost: "1995-06-16",  
     lastPost: takeLastPost(),
-    apiKey:  "caAtJWtk07G83BJP6T5w5zwWVURksPCbs468353t"
+    apiKey:  "caAtJWtk07G83BJP6T5w5zwWVURksPCbs468353t",
+    pageSelected: null,
 
 };
 
@@ -25,6 +26,8 @@ function nasaStore(state = INITIAL_STATE, action){
             return {...state, date:  action.date }
         case 'SET_LOADING':
             return {...state, isLoading:  action.isLoading }
+        case 'SET_PAGE_SELECTED':
+            return {...state, pageSelected: action.pageSelected }
 
 
         default:

@@ -1,18 +1,25 @@
-import React, { useState } from 'react'
+import React, { useState , useEffect} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 
 
 export default function NavBar() {
-
+    const dispatch = useDispatch()
     const storeDate = useSelector(state => state.date)
     const isLoadingStore = useSelector(state => state.isLoading)
     const firstPost = useSelector(state => state.firstPost)
     const lastPost = useSelector(state => state.lastPost)
     const selectedDate = useSelector(state => state.date)
+    const pageSelected = useSelector(state => state.pageSelected)
     const [calendarDate, setCalendarDate] = useState(lastPost)
     const [errorMessage, setErrorMessage] = useState("")
+
+
+    useEffect(() => {
+        dispatch({ type: 'SET_PAGE_SELECTED', pageSelected: window.location.pathname })
+
+    }, [window.location.pathname])
 
 
 
@@ -59,7 +66,7 @@ export default function NavBar() {
     const isFirstPost = () => storeDate === firstPost || isLoadingStore === true ? false : true
     const isValidDatePrev = () => storeDate === firstPost || isLoadingStore === true || selectedDate === null ? false : true
     const isValidDateNext = () => storeDate === lastPost || isLoadingStore === true || selectedDate === null ? false : true
-    const isLoading = () => isLoadingStore === true ? false : true
+    const isDifferentPage = () => isLoadingStore === true || pageSelected === "/listPosts" ? false : true
 
 
 
@@ -109,7 +116,7 @@ export default function NavBar() {
                     (<Link to={`/date/date=${lastPost}`}>Last</Link>) :
                     (<div className="disabled-button">Last</div>)}
                 </li>
-                <li className="menu-item calendar-button"> {isLoading() ?
+                <li className="menu-item calendar-button"> {isDifferentPage() ?
                     (<Link to={`/listPosts`}>List posts</Link>) :
                     (<div className="disabled-button">List posts</div>)}
                 </li>

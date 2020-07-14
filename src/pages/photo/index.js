@@ -5,11 +5,9 @@ import { useSelector, useDispatch } from 'react-redux'
 
 export default function NasaPhoto(props) {
     const dispatch = useDispatch()
-    const [nasaPhoto, setNasaPhoto] = useState({})
+    const [nasaPhoto, setNasaPhoto] = useState(null)
     const isLoading = useSelector(state => state.isLoading)
     const apiKey = useSelector(state => state.apiKey)
-
-
 
 
     useEffect(() => {
@@ -29,8 +27,14 @@ export default function NasaPhoto(props) {
     }, [props.match.params.date])
 
 
+
+  //  useEffect(() => !props.match.params.date ? loadEntity(): changeDate(), [])
+  //  useEffect(() =>  {changeDate()}, [props.match.params.date])
+
     async function loadEntity() {
         dispatch({ type: 'SET_LOADING', isLoading: true })
+
+
         await ApiNasa.get(`planetary/apod?api_key=${apiKey}`)
             .then((response) => {
                 const data = response.data
@@ -64,7 +68,7 @@ export default function NasaPhoto(props) {
 
 
 
-    if (!nasaPhoto) return <div />
+    if (!nasaPhoto && isLoading === false) return <div className="error-message">Failed to connect to server</div>
 
     if (isLoading) return (<div className="loading-page"><h1>Loading...</h1></div>)
 
