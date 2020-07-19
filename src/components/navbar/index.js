@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
+import "./style.css"
 
 
 
@@ -46,8 +47,8 @@ export default function NavBar() {
         const lastDate = new Date(lastPost)
         const firstDate = new Date(firstPost)
 
-        if (inputDate < firstDate) { setErrorMessage(`The first date is less than ${firstPost}`) }
-        else if (inputDate > lastDate) { setErrorMessage(`The last date is greater than ${lastPost}`) }
+        if (inputDate < firstDate) { setErrorMessage(`The first date is less than ${firstPost.slice(5)}`) }
+        else if (inputDate > lastDate) { setErrorMessage(`The last date is greater than ${lastPost.slice(5)}`) }
         else setErrorMessage("")
 
     }
@@ -85,7 +86,9 @@ export default function NavBar() {
     const isFirstPost = () => storeDate === firstPost || isLoadingStore === true ? false : true
     const isValidDatePrev = () => storeDate === firstPost || isLoadingStore === true || selectedDate === null ? false : true
     const isValidDateNext = () => storeDate === lastPost || isLoadingStore === true || selectedDate === null ? false : true
-    const isDifferentPage = () => isLoadingStore === true || pageSelected === "/listPosts" ? false : true
+    const isListPosts = () => isLoadingStore === true || pageSelected === "/listPosts" ? false : true
+    const isAlbum = () => isLoadingStore === true || pageSelected === "/listAlbum" ? false : true
+
 
 
 
@@ -107,45 +110,52 @@ export default function NavBar() {
     }
 
     return (
-        <div className="navbar">
-            <ul>
-                <li className="menu-item menu-item-text"><p>Set a date to navigate: </p></li>
-                <li className="menu-item menu-input">
+        <header>
+            <div className="container">
+                <div className="menu-date-select">
                     <div className="input-group">
-                        <div className="error-message">{`${errorMessage}`}</div>
+                        <p>Set a date to navigate: </p>
                         <input onChange={(e) => changeDate(e)} type="date" value={calendarDate}></input>
+                        <div className="error-message">{`${errorMessage}`}</div>
+                        <div className="menu-button-go">
+                            {isValidDate() ?
+                                (<Link className="button" to={`/date/date=${calendarDate}`}>Go</Link>) :
+                                (<a className="disabled-button">Go</a>)}
+                        </div>
                     </div>
-                </li>
-                <li className="menu-item menu-button-go"> {isValidDate() ?
-                    (<Link to={`/date/date=${calendarDate}`}>Go</Link>) :
-                    (<div className="disabled-button">Go</div>)}
-                </li>
-                <li className="menu-item menu-button-first"> {isFirstPost() ?
-                    (<Link to={`/date/${firstPost}`}>First</Link>) :
-                    (<div className="disabled-button">First</div>)}
-                </li>
-                <li className="menu-item menu-button-prev"> {isValidDatePrev() ?
-                    (<Link to={`/date/date=${getPrevDate}`}>Prev</Link>) :
-                    (<div className="disabled-button">Prev</div>)}
 
-                </li>
-                <li className="menu-item menu-button-next"> {isValidDateNext() ?
-                    (<Link to={`/date/date=${getNextDate}`}>Next</Link>) :
-                    (<div className="disabled-button">Next</div>)}
-                </li>
-                <li className="menu-item menu-button-last"> {isLastPost() ?
-                    (<Link to={`/date/${lastPost}`}>Last</Link>) :
-                    (<div className="disabled-button">Last</div>)}
-                </li>
-                <li className="menu-item calendar-button"> {isDifferentPage() ?
-                    (<Link to={`/listPosts`}>List posts</Link>) :
-                    (<div className="disabled-button">List posts</div>)}
-                </li>
+                </div>
+                <nav>
+                    <ul>
+                        <li className="menu-item menu-button-first"> {isFirstPost() ?
+                            (<Link className="button" to={`/date/${firstPost}`}>First</Link>) :
+                            (<a className="disabled-button">First</a>)}
+                        </li>
+                        <li className="menu-item menu-button-prev"> {isValidDatePrev() ?
+                            (<Link className="button" to={`/date/date=${getPrevDate}`}>Prev</Link>) :
+                            (<a className="disabled-button">Prev</a>)}
 
+                        </li>
+                        <li className="menu-item menu-button-next"> {isValidDateNext() ?
+                            (<Link className="button" to={`/date/date=${getNextDate}`}>Next</Link>) :
+                            (<a className="disabled-button">Next</a>)}
+                        </li>
+                        <li className="menu-item menu-button-last"> {isLastPost() ?
+                            (<Link className="button" to={`/date/${lastPost}`}>Last</Link>) :
+                            (<a className="disabled-button">Last</a>)}
+                        </li>
+                        <li className="menu-item calendar-button"> {isLastPost() ?
+                            (<Link className="button" to={`/listPosts`}>List posts</Link>) :
+                            (<a className="disabled-button">List posts</a>)}
+                        </li>
+                        <li className="menu-item calendar-button"> {isAlbum() ?
+                            (<Link className="button" to={`/album`}>Album</Link>) :
+                            (<a className="disabled-button">Album</a>)}
+                        </li>
+                    </ul>
+                </nav>
+            </div>
 
-
-
-            </ul>
-        </div>
+        </header >
     )
 }

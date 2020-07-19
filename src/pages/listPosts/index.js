@@ -95,7 +95,9 @@ export default function ListPosts() {
                                 <h3>{post.title}</h3>
 
                                 {post.media_type === 'image' ? (
-                                    <img src={post.url}></img>
+                                    <div className="mini-post-img">
+                                        <img src={post.url}></img>
+                                    </div>
 
                                 ) : (
                                         <div className="mini-post-video">
@@ -147,7 +149,7 @@ export default function ListPosts() {
                                             <p>Click in "View" to see the video</p>
                                         </div>
                                     )}
-                                <div className = "mini-post-read-more-small">
+                                <div className="mini-post-read-more-small">
                                     <Link to={`/date/date=${post.date}`}>View</Link>
                                 </div>
                             </div>

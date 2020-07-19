@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import ApiNasa from "../../services/nasa-api"
 import { useSelector, useDispatch } from 'react-redux'
+import './style.css'
 
 
 export default function NasaPhoto(props) {
@@ -95,20 +96,20 @@ export default function NasaPhoto(props) {
             <>
                 <div className="content">
                     <h1 className="title">{isLoading === false ? (nasaPhoto.title) : (<> Loading...</>)}</h1>
-
                     <div className="date-panel">
-
                         <div className="selected-date">
-                            <p>{props.match.params.date  ? (props.match.params.date.slice(5))  : (isLoading === false ? (nasaPhoto.date) : (<> Loading </>) )}</p>
-
+                            <p>{props.match.params.date ? (props.match.params.date.slice(5)) : (isLoading === false ? (nasaPhoto.date) : (<> Loading </>))}</p>
                         </div>
-
                     </div>
 
                     {isLoading === false ? (nasaPhoto.media_type === 'image' ? (
                         <>
-                            <img className="media" src={nasaPhoto.url} alt={nasaPhoto.title}></img>
-                            <p className="photo-explanation">{nasaPhoto.explanation}</p>
+                            <div className="photo-content">
+                                <div className="media">
+                                    <img src={nasaPhoto.url} alt={nasaPhoto.title}></img>
+                                </div>
+                                <p className="photo-explanation">{nasaPhoto.explanation}</p>
+                            </div>
                         </>
 
 

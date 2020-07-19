@@ -1,0 +1,35 @@
+.footer{
+  position: static;
+  background-color: #333533;
+  margin-top: 10px;
+  width: 100%;
+  padding: 10px;
+}
+
+.footer ul{
+    margin: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.created-by{
+    list-style: none;
+    color: #F5CB5C;
+}
+
+.github-button{
+    background-color: #FFF;
+    list-style: none;
+    padding: 0.5rem;
+    border-radius: 5%;
+}
+
+.github-button a{
+    text-decoration: none;    
+    color: #333533;
+}
+
+.github-button:hover{
+    background-color: #F5CB5C ;
+}

@@ -1,0 +1,62 @@
+header {
+    background-color: #333533;
+}
+
+header .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+header .menu-date-select {
+    margin: 7px;
+
+}
+
+header .input-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+}
+
+header .menu-date-select p {
+    color: #F5CB5C;
+    grid-column-start: 1;
+    grid-column-end: 1;
+    grid-row: 1;
+}
+
+header .menu-date-select input {
+    grid-column-start: 1;
+    grid-column-end: 1;
+    grid-row-start: 2;
+    grid-row-end: 2;
+}
+
+header .menu-date-select .menu-button-go {
+    display: flex;
+    align-items: center;
+    grid-column-start: 2;
+    grid-column-end: 2;
+    grid-row-start: 2;
+    grid-row-end: 2;
+}
+
+header nav ul {
+    display: flex;
+    list-style: none;
+}
+
+header .menu-item {
+    margin: 3px;
+}
+
+.error-message {
+    font-size: 0.9rem;
+    color: #ff0000;
+    grid-column-start: 1;
+    grid-column-end: 1;
+    grid-row-start: 3;
+    grid-row-end: 3;
+}

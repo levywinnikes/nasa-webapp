@@ -1,0 +1,93 @@
+.album {
+    grid-column-start: 1;
+    grid-column-end: 5;
+
+    
+}
+
+.photos-nasa {
+    display: flex;
+    margin: auto;
+    width: 90%;
+    height: 75vh;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+
+}
+
+.photo {
+    flex: none;
+    width: 100%;
+    height: 100%;
+    scroll-snap-align: start;
+    background-color: #333533;
+}
+
+.photo img {
+    display: block;
+    width: 100%;
+    height: 30%;
+    object-fit: cover;
+    transition-duration: 1s;
+}
+
+.photo img:hover {
+    width: 100%;
+    height: 95%;
+    object-fit: cover;
+}
+
+
+.album-content h1 {
+    padding: 5px;
+    color: #F5CB5C;
+}
+
+.album-content p {
+    padding: 5px;
+    color: #E8EDDF;
+}
+
+.album-button-next {
+    position: absolute;
+    right: 7vw;
+    height: 100%;
+    line-height: 3000%;
+}
+
+.album-button-next a {
+    padding: 15px;
+    color: #E8EDDF;
+    text-decoration: none;
+    font-size: 300%;
+}
+
+.album-button-prev {
+    position: absolute;
+    left: 7vw;
+    height: 100%;
+    line-height: 3000%;
+}
+
+.album-button-prev a {
+    padding: 15px;
+    color: #E8EDDF;
+    text-decoration: none;
+    font-size: 300%;
+}
+
+.album-button-fullscreen {
+    position: absolute;
+    right: 15vw;
+    top: 70%;
+    height: 100%;
+}
+
+.album-button-fullscreen a {
+    padding: 15px;
+    color: #E8EDDF;
+    text-decoration: none;
+    font-size: 300%;
+}
