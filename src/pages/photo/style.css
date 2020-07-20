@@ -53,11 +53,11 @@
 .photo-explanation {
     transition-duration: 2s;
     opacity: 0.5;
-    width: 80%;
+    width: 90%;
     bottom: 30px;
     left: 5%;
+    margin: auto;
     position: absolute;
-    margin: 1rem;
     color: #E8EDDF;
 }
 
