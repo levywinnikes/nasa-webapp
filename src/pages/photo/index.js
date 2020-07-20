@@ -203,7 +203,7 @@ export default function NasaPhoto(props) {
 
                                 </div>
                                 <div className="photo-explanation">
-                                    <p className="photo-explanation">{nasaPhoto.explanation}</p>
+                                    <p>{nasaPhoto.explanation}</p>
 
                                 </div>
                             </div>

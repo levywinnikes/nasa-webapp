@@ -59,6 +59,13 @@
     margin: auto;
     position: absolute;
     color: #E8EDDF;
+    text-align: justify;
+    
+
+}
+
+.photo-explanation p{
+    margin: 1rem;
 }
 
 .photo-explanation:hover {
