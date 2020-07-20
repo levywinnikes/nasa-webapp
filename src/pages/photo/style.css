@@ -103,10 +103,15 @@
     opacity: 0.3;
 }
 
+.arrow-photo-disabled{
+    opacity: 0.1;
+    cursor: not-allowed;
+
+}
+
 .arrow-photo:hover{
     opacity: 1.0;
-    cursor: pointer;
-    
+    cursor: pointer;   
 }
 
 .arrow-photo-prev {

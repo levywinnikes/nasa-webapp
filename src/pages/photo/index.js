@@ -110,6 +110,8 @@ export default function NasaPhoto(props) {
 
     const isValidDatePrev = () => storeDate === firstPost || isLoadingStore === true || selectedDate === null ? false : true
     const isValidDateNext = () => storeDate === lastPost || isLoadingStore === true || selectedDate === null ? false : true
+    const isLastPost = () => storeDate === lastPost || isLoadingStore === true ? false : true
+    const isFirstPost = () => storeDate === firstPost || isLoadingStore === true ? false : true
 
 
     function DatePanel() {
@@ -122,13 +124,19 @@ export default function NasaPhoto(props) {
                             <div className="draw-line-date rotate-prev-line-2"></div>
                         </Link>
                     ) : (
-                            <></>
+                            <div className="arrow-photo-disabled arrow-date">
+                                <div className="draw-line-date rotate-prev-line-1"></div>
+                                <div className="draw-line-date rotate-prev-line-2"></div>
+                            </div>
                         )
                 }
 
                 <div className="selected-date">
                     <p>{props.match.params.date ? (props.match.params.date.slice(5)) : (isLoading === false ? (<>Invalid date</>) : (<> Loading </>))}</p>
                 </div>
+
+
+
                 {
                     isValidDateNext() ? (
                         <Link className="arrow-photo arrow-date" to={`/date/date=${getNextDate}`}>
@@ -136,7 +144,12 @@ export default function NasaPhoto(props) {
                             <div className="draw-line-date rotate-next-line-2"></div>
                         </Link>
                     ) : (
-                            <> </>
+
+                            <div className="arrow-photo-disabled arrow-date">
+                                <div className="draw-line-date rotate-next-line-1"></div>
+                                <div className="draw-line-date rotate-next-line-2"></div>
+                            </div>
+
                         )
                 }
             </>)
@@ -171,6 +184,8 @@ export default function NasaPhoto(props) {
                                 <div className="media">
 
                                     {isValidDatePrev() ? (
+
+
                                         <Link className="arrow-photo arrow-photo-prev" to={`/date/date=${getPrevDate}`} >
                                             <div className="draw-line-photo rotate-prev-line-1"></div>
                                             <div className="draw-line-photo rotate-prev-line-2"></div>

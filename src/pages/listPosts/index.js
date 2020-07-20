@@ -2,7 +2,10 @@ import React, { useState, useEffect } from 'react'
 import ApiNasa from "../../services/nasa-api"
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
-import ReactResizeDetector from 'react-resize-detector'
+import './style.css'
+import VideoContent from '../../assets/img/video-content.png'
+
+
 
 
 
@@ -14,7 +17,6 @@ export default function ListPosts() {
     const [isMoreContentLoading, setIsMoreContentLoading] = useState(false)
     const [minorDateLastDate, setMinorDateLastDate] = useState()
     const [minorDateFirstDate, setMinorDateFirstDate] = useState()
-    const [smallSize, setSmallSize] = useState(false)
 
     const [monthPost, setMonthPost] = useState([{}])
 
@@ -70,100 +72,51 @@ export default function ListPosts() {
         setIsMoreContentLoading(false)
     }
 
-    function resize() {
-        if (window.innerWidth <= 1024) {
-            setSmallSize(true)
-        }
-        else {
-            setSmallSize(false)
 
-        }
-
-    }
 
     if (isLoading) return (<div className="loading-page"><h1>Loading...</h1></div>)
 
     else
 
-        if (smallSize === false)
-            return (
-                <>
-                    <div className="mini-posts">
-                        {monthPost.sort((a, b) => a.date < b.date ? 1 : -1).map(post => (
-                            <div key={post.date} className="mini-post">
-                                <p className="mini-post-date">{post.date}</p>
+        return (
+            <>
+                <div className="mini-posts">
+                    {monthPost.sort((a, b) => a.date < b.date ? 1 : -1).map(post => (
+                        <div key={post.date} className="mini-post">
+                            <div className="mini-post-date">
+                                <p>{post.date}</p>
+                            </div>
+                            <div className="mini-post-title">
                                 <h3>{post.title}</h3>
+                            </div>
+                            {post.media_type === 'image' ? (
+                                <div className="mini-post-img">
+                                    <img src={post.url}></img>
+                                </div>
 
-                                {post.media_type === 'image' ? (
-                                    <div className="mini-post-img">
-                                        <img src={post.url}></img>
+                            ) : (
+                                    <div className="video-content">
+                                        <img src={VideoContent}></img>
                                     </div>
 
-                                ) : (
-                                        <div className="mini-post-video">
-                                            <h3>Video content</h3>
-
-                                            <p>Click in "View" to see the video</p>
-                                        </div>
-                                    )}
+                                )}
 
 
 
-                                <p className="mini-post-explanation">{post.explanation} </p>
-                                <Link className="button mini-post-read-more" to={`/date/date=${post.date}`}>View</Link>
-                            </div>
-                        ))}
-                        {isMoreContentLoading === false ? (
-                            <button className="button" onClick={() => morePosts()}>More pelase!</button>) :
-                            (<button disabled className="button">Loading...</button>)}
-                        <ReactResizeDetector handleWidth handleHeight onResize={resize} />
+                            <p className="mini-post-explanation">{post.explanation} </p>
+                            <Link className="button mini-post-read-more" to={`/date/date=${post.date}`}>View</Link>
+                        </div>
+                    ))}
+                    {isMoreContentLoading === false ? (
+                        <button className="button more-content-button" onClick={() => morePosts()}>More please!</button>) :
+                        (<button disabled className="button more-content-button">Loading...</button>)}
 
-                    </div>
-                </>
-            )
-
-        else if (smallSize === true)
-            return (
-                <>
-                    <div className="mini-posts-small">
-
-                        {monthPost.sort((a, b) => a.date < b.date ? 1 : -1).map(post => (
+                </div>
+            </>
+        )
 
 
-                            <div key={post.date} className="mini-post-small">
-                                <p className="mini-post-date-small">{post.date}</p>
 
-                                <div className="mini-post-title-small">
-                                    <h3>{post.title}</h3>
-                                </div>
-                                {post.media_type === 'image' ? (
-                                    <div className="mini-post-image-small">
-                                        <img src={post.url}></img>
-
-                                    </div>
-
-                                ) : (
-                                        <div className="mini-post-video-small">
-                                            <h3>Video content</h3>
-
-                                            <p>Click in "View" to see the video</p>
-                                        </div>
-                                    )}
-                                <div className="mini-post-read-more-small">
-                                    <Link to={`/date/date=${post.date}`}>View</Link>
-                                </div>
-                            </div>
-                        ))}
-                        {isMoreContentLoading === false ? (
-                            <button className="button mini-post-more-please" onClick={() => morePosts()}>More pelase!</button>) :
-                            (<button disabled className="button mini-post-more-please">Loading...</button>)}
-                        <ReactResizeDetector handleWidth handleHeight onResize={resize} />
-
-                    </div>
-
-
-                </>
-            )
 
 
 }

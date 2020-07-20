@@ -54,38 +54,10 @@ export default function NavBar() {
     }
 
 
-    function prevDate() {
-        if (storeDate) {
-            const yesterday = new Date(storeDate);
-            var newDate = null
-            yesterday.setDate(yesterday.getDate() - 1)
-            newDate = new Intl.DateTimeFormat('fr-CA').format(Date.parse(yesterday))
-
-            return newDate
-        }
-    }
-    const getPrevDate = prevDate()
-
-
-
-
-    function nextDate() {
-        if (storeDate) {
-            const tomorrow = new Date(storeDate);
-            var newDate = null
-            tomorrow.setDate(tomorrow.getDate() + 1)
-            newDate = new Intl.DateTimeFormat('fr-CA').format(Date.parse(tomorrow))
-
-            return newDate
-        }
-    }
-    const getNextDate = nextDate()
 
 
     const isLastPost = () => storeDate === lastPost || isLoadingStore === true ? false : true
     const isFirstPost = () => storeDate === firstPost || isLoadingStore === true ? false : true
-    const isValidDatePrev = () => storeDate === firstPost || isLoadingStore === true || selectedDate === null ? false : true
-    const isValidDateNext = () => storeDate === lastPost || isLoadingStore === true || selectedDate === null ? false : true
     const isListPosts = () => isLoadingStore === true || pageSelected === "/listPosts" ? false : true
     const isAlbum = () => isLoadingStore === true || pageSelected === "/listAlbum" ? false : true
 

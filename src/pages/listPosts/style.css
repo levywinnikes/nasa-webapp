@@ -1,0 +1,132 @@
+.mini-posts {
+    width: 90vw;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1rem;
+
+}
+
+.mini-post {
+    width: 100%;
+    height: 40rem;
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    background-color: #333533;
+    margin-bottom: 1rem;
+}
+
+.mini-post-date{
+
+    width: 80%;
+    margin: auto;
+    background-color: #FFF;
+}
+
+.mini-post-date p{
+    background-color: #FFF;
+
+    color: #333533;
+
+}
+
+.mini-post-img {
+    width: 90%;
+    height: 20.0rem;
+    margin: auto;
+    grid-column: 1;
+}
+
+.mini-post-img img {
+    width: 100%;
+    height: 100%;
+}
+
+.video-content {
+    width: 90%;
+    height: 20.0rem;
+    margin: auto;
+    grid-column: 1;
+}
+
+.video-content img {
+    width: 100%;
+    height: 100%;
+}
+
+.mini-post-explanation {
+    color: #E8EDDF;
+    grid-column: 2;
+}
+
+.mini-post-title {
+    color: #F5CB5C;
+}
+
+.mini-post-date {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #E8EDDF;
+}
+
+.mini-post-read-more {
+    width: 70%;
+    height: auto;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.more-content-button {
+    margin: auto;
+    width: 95%;
+    grid-column-start: 1;
+    grid-column-end: 4;
+}
+
+@media only screen and (max-width: 768px) {
+    .mini-posts {
+        display: grid;
+        grid-gap: 5px;
+    }
+    .mini-post {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+    .mini-post-explanation {
+        display: none;
+    }
+    .mini-post-title {
+        text-align: center;
+        height: 7rem;
+        grid-column: 1;
+    }
+    .mini-post-read-more {
+        grid-column: 1;
+
+    }
+}
+
+@media only screen and (max-width: 425px) {
+
+    .mini-posts {
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 1rem;
+    
+    }
+
+    .more-content-button {
+        grid-column-start: 1;
+        grid-column-end: 3;
+    }
+}
+
+@media only screen and (max-width: 320px) {
+    .more-content-button {
+        grid-column-start: 1;
+        grid-column-end: 2;
+    }
+}

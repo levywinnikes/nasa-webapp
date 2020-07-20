@@ -78,9 +78,7 @@ export default function Main() {
                         <div className="album-button-prev">
                             <a href="#" onClick={() => prevSlide()}>{"<"}</a>
                         </div>
-                        <div className="album-button-fullscreen">
-                            <a href="#" onClick={() => fullScreen()}>{"[ ]"}</a>
-                        </div>
+
 
 
                     </div>
