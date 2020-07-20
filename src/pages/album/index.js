@@ -55,7 +55,7 @@ export default function Main() {
 
                     {album?.map((photo) => (
                         <>
-                            <div className="photo">
+                            <div className="photo-album">
                                 <img src={photo.url}></img>
                                 <div className="album-content">
                                     <div className="album-content-title">

@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import ApiNasa from "../../services/nasa-api"
 import { useSelector, useDispatch } from 'react-redux'
+import { Link } from 'react-router-dom'
 import './style.css'
 
 
 export default function NasaPhoto(props) {
     const dispatch = useDispatch()
     const [nasaPhoto, setNasaPhoto] = useState(null)
+    const storeDate = useSelector(state => state.date)
+    const selectedDate = useSelector(state => state.date)
+    const firstPost = useSelector(state => state.firstPost)
     const isLoading = useSelector(state => state.isLoading)
     const apiKey = useSelector(state => state.apiKey)
+    const isLoadingStore = useSelector(state => state.isLoading)
+    const lastPost = useSelector(state => state.lastPost)
     const [errorMessage, setErrorMessage] = useState("")
 
 
@@ -77,16 +83,75 @@ export default function NasaPhoto(props) {
     }
 
 
+    function prevDate() {
+        if (storeDate) {
+            const yesterday = new Date(storeDate);
+            var newDate = null
+            yesterday.setDate(yesterday.getDate() - 1)
+            newDate = new Intl.DateTimeFormat('fr-CA').format(Date.parse(yesterday))
+
+            return newDate
+        }
+    }
+    const getPrevDate = prevDate()
+
+    function nextDate() {
+        if (storeDate) {
+            const tomorrow = new Date(storeDate);
+            var newDate = null
+            tomorrow.setDate(tomorrow.getDate() + 1)
+            newDate = new Intl.DateTimeFormat('fr-CA').format(Date.parse(tomorrow))
+
+            return newDate
+        }
+    }
+    const getNextDate = nextDate()
+
+
+    const isValidDatePrev = () => storeDate === firstPost || isLoadingStore === true || selectedDate === null ? false : true
+    const isValidDateNext = () => storeDate === lastPost || isLoadingStore === true || selectedDate === null ? false : true
+
+
+    function DatePanel() {
+        return (
+            <>
+                {
+                    isValidDatePrev() ? (
+                        <Link className="arrow-photo arrow-date" to={`/date/date=${getPrevDate}`}>
+                            <div className="draw-line-date rotate-prev-line-1"></div>
+                            <div className="draw-line-date rotate-prev-line-2"></div>
+                        </Link>
+                    ) : (
+                            <></>
+                        )
+                }
+
+                <div className="selected-date">
+                    <p>{props.match.params.date ? (props.match.params.date.slice(5)) : (isLoading === false ? (<>Invalid date</>) : (<> Loading </>))}</p>
+                </div>
+                {
+                    isValidDateNext() ? (
+                        <Link className="arrow-photo arrow-date" to={`/date/date=${getNextDate}`}>
+                            <div className="draw-line-date rotate-next-line-1"></div>
+                            <div className="draw-line-date rotate-next-line-2"></div>
+                        </Link>
+                    ) : (
+                            <> </>
+                        )
+                }
+            </>)
+
+    }
 
 
     if (!nasaPhoto && isLoading === false)
         return (
             <div className="content">
-                <div className="error-message">
-                    <h1>
-                        {errorMessage}
-                    </h1>
+                <div className="title">{errorMessage}</div>
+                <div className="date-panel">
+                    <DatePanel />
                 </div>
+
             </div>
         )
 
@@ -97,16 +162,30 @@ export default function NasaPhoto(props) {
                 <div className="content">
                     <h1 className="title">{isLoading === false ? (nasaPhoto.title) : (<> Loading...</>)}</h1>
                     <div className="date-panel">
-                        <div className="selected-date">
-                            <p>{props.match.params.date ? (props.match.params.date.slice(5)) : (isLoading === false ? (nasaPhoto.date) : (<> Loading </>))}</p>
-                        </div>
+                        <DatePanel />
                     </div>
 
                     {isLoading === false ? (nasaPhoto.media_type === 'image' ? (
                         <>
                             <div className="photo-content">
                                 <div className="media">
+
+                                    {isValidDatePrev() ? (
+                                        <Link className="arrow-photo arrow-photo-prev" to={`/date/date=${getPrevDate}`} >
+                                            <div className="draw-line-photo rotate-prev-line-1"></div>
+                                            <div className="draw-line-photo rotate-prev-line-2"></div>
+                                        </Link>
+                                    ) : (<></>)}
+
                                     <img src={nasaPhoto.url} alt={nasaPhoto.title}></img>
+
+                                    {isValidDateNext() ? (
+                                        <Link className="arrow-photo arrow-photo-next" to={`/date/date=${getNextDate}`}>
+                                            <div className="draw-line-photo rotate-next-line-1"></div>
+                                            <div className="draw-line-photo rotate-next-line-2"></div>
+                                        </Link>
+                                    ) : (<></>)}
+
                                 </div>
                                 <p className="photo-explanation">{nasaPhoto.explanation}</p>
                             </div>

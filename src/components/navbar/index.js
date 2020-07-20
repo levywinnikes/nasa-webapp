@@ -131,22 +131,13 @@ export default function NavBar() {
                             (<Link className="button" to={`/date/${firstPost}`}>First</Link>) :
                             (<a className="disabled-button">First</a>)}
                         </li>
-                        <li className="menu-item menu-button-prev"> {isValidDatePrev() ?
-                            (<Link className="button" to={`/date/date=${getPrevDate}`}>Prev</Link>) :
-                            (<a className="disabled-button">Prev</a>)}
-
-                        </li>
-                        <li className="menu-item menu-button-next"> {isValidDateNext() ?
-                            (<Link className="button" to={`/date/date=${getNextDate}`}>Next</Link>) :
-                            (<a className="disabled-button">Next</a>)}
-                        </li>
                         <li className="menu-item menu-button-last"> {isLastPost() ?
                             (<Link className="button" to={`/date/${lastPost}`}>Last</Link>) :
                             (<a className="disabled-button">Last</a>)}
                         </li>
-                        <li className="menu-item calendar-button"> {isLastPost() ?
-                            (<Link className="button" to={`/listPosts`}>List posts</Link>) :
-                            (<a className="disabled-button">List posts</a>)}
+                        <li className="menu-item calendar-button"> {isListPosts() ?
+                            (<Link className="button" to={`/listPosts`}>List</Link>) :
+                            (<a className="disabled-button">List</a>)}
                         </li>
                         <li className="menu-item calendar-button"> {isAlbum() ?
                             (<Link className="button" to={`/album`}>Album</Link>) :
