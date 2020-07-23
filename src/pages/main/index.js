@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import ApiNasa from "../../services/nasa-api"
 import { useSelector, useDispatch } from 'react-redux'
+import { InfoSquare } from '@styled-icons/boxicons-regular/InfoSquare'
+import { PersonOutline } from '@styled-icons/evaicons-outline/PersonOutline'
+import { Slideshow } from '@styled-icons/boxicons-regular/Slideshow'
 import './style.css'
 
 export default function MainNasa() {
@@ -9,9 +12,7 @@ export default function MainNasa() {
     const lastDate = useSelector(state => state.lastPost)
     const [showExplanation, setShowExplanation] = useState(false)
     const [showAbout, setShowAbout] = useState(false)
-
     const [album, setAlbum] = useState([{}])
-
 
     useEffect(async () => {
         dispatch({ type: 'SET_LOADING', isLoading: true })
@@ -50,7 +51,17 @@ export default function MainNasa() {
             <div className="content">
                 <div className="carousel ">
 
-                    {album.map(photo => (
+                    <div className="arrow-photo arrow-photo-next">
+                        <div className="draw-line-photo rotate-next-line-1"></div>
+                        <div className="draw-line-photo rotate-next-line-2"></div>
+                    </div>
+
+                    <div className="arrow-photo arrow-photo-prev">
+                        <div className="draw-line-photo rotate-prev-line-1"></div>
+                        <div className="draw-line-photo rotate-prev-line-2"></div>
+                    </div>
+
+                    {album.map(photo => (  
                         <>
                             <div className="post">
                                 <div className="header">
@@ -73,8 +84,8 @@ export default function MainNasa() {
 
 
                                     {showAbout ? (
-                                        <div className="about">
-                                            <p onMouseOut={() => toggleAboutOff()}>Created by: André Levy S. Winnikes</p>
+                                        <div className="about" onMouseOut={() => toggleAboutOff()} >
+                                            <p>Created by: André Levy S. Winnikes</p>
                                         </div>
                                     ) : (<> </>)}
 
@@ -83,18 +94,19 @@ export default function MainNasa() {
 
 
                                         <div className="button-show button-show-about" onMouseOver={() => toggleAboutOn()}>
-                                            About
+                                            <PersonOutline />
+
                                         </div>
                                         <div className="button-show" >
-                                            Show
+                                            <Slideshow />
                                         </div>
                                         <div className="button-show button-show-explanation" onMouseOver={() => toggleExplanationOn()}>
-                                            EXP
+                                            <InfoSquare />
                                         </div>
                                     </div>
                                 </div>
 
-                                <img src={photo.hdurl}></img>
+                                <img src={photo.url}></img>
                             </div>
 
 
