@@ -1,4 +1,4 @@
-import {createStore} from 'redux'
+import { createStore } from 'redux'
 
 
 const takeLastPost = () => {
@@ -13,21 +13,22 @@ const takeLastPost = () => {
 const INITIAL_STATE = {
     date: null,
     isLoading: false,
-    firstPost: "date=1995-06-16",  
+    firstPost: "date=1995-06-16",
     lastPost: takeLastPost(),
-    apiKey:  "caAtJWtk07G83BJP6T5w5zwWVURksPCbs468353t",
+    apiKey: "caAtJWtk07G83BJP6T5w5zwWVURksPCbs468353t",
     pageSelected: null,
 
 };
 
-function nasaStore(state = INITIAL_STATE, action){
-    switch(action.type){
+function nasaStore(state = INITIAL_STATE, action) {
+    switch (action.type) {
         case 'SET_DATE':
-            return {...state, date:  action.date }
+            return { ...state, date: action.date }
         case 'SET_LOADING':
-            return {...state, isLoading:  action.isLoading }
+            return { ...state, isLoading: action.isLoading }
         case 'SET_PAGE_SELECTED':
-            return {...state, pageSelected: action.pageSelected }
+            return { ...state, pageSelected: action.pageSelected }
+
 
 
         default:
