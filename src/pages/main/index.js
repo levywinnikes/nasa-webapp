@@ -1,9 +1,10 @@
-import React, { useEffect, useState, useLayoutEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import ApiNasa from "../../services/nasa-api"
 import { useSelector, useDispatch } from 'react-redux'
 import { InfoSquare } from '@styled-icons/boxicons-regular/InfoSquare'
 import { PersonOutline } from '@styled-icons/evaicons-outline/PersonOutline'
 import { Slideshow } from '@styled-icons/boxicons-regular/Slideshow'
+import { Link } from 'react-router-dom'
 import './style.css'
 
 export default function MainNasa(props) {
@@ -16,19 +17,36 @@ export default function MainNasa(props) {
     const [album, setAlbum] = useState([{}])
     const [firstDate, setFirstDate] = useState()
     const [lastDate, setLastDate] = useState()
-    const [entityLoad, setEntityLoad] = useState(false)
+    const [entityLoad, setEntityLoad] = useState("")
+    const [inputDate, setInputDate] = useState("")
+    const [showInput, setShowInput] = useState(false)
+    const [firstRefresh, setFirstRefresh] = useState(true)
 
 
 
 
 
     useEffect(() => {
+        console.log(props.match.params.date)
 
-        const today = lastPost.slice(5)
-        const dateAgo = daysAgo(lastPost.slice(5), 10)
-        setLastDate(today)
-        setFirstDate(dateAgo)
-        setEntityLoad(true)
+        if (props.match.params.date === undefined) {
+
+            console.log("preciso chegar aqui")
+            const dateAgo = daysAgo(lastPost.slice(5), 10)
+            const today = lastPost.slice(5)
+            setLastDate(today)
+            setFirstDate(dateAgo)
+            setEntityLoad("Load-Entity")
+        }
+
+        else {
+            const propDate = props.match.params.date
+            const dateAgo = daysAgo(propDate, 10)
+            const today = propDate
+            setLastDate(today)
+            setFirstDate(dateAgo)
+            setEntityLoad("Load-Props")
+        }
 
     }, [lastPost])
 
@@ -37,6 +55,21 @@ export default function MainNasa(props) {
         loadEntity()
 
     }, [entityLoad])
+
+    useEffect(() => {
+        console.log("cheguei aqui")
+
+        if (props.match.params.date !== undefined) {
+            const propDate = props.match.params.date
+            const dateAgo = daysAgo(propDate, 10)
+            const today = propDate
+            setLastDate(today)
+            setFirstDate(dateAgo)
+            setEntityLoad("Change-props")
+        }
+    }, [props.match.params.date])
+
+
 
 
 
@@ -64,6 +97,18 @@ export default function MainNasa(props) {
 
     }
 
+    async function loadProps() {
+        dispatch({ type: 'SET_LOADING', isLoading: true })
+        await ApiNasa.get(`planetary/apod?api_key=${apiKey}&start_date=${firstDate}&end_date=${lastDate}`)
+            .then((response) => {
+                const data = response.data.reverse()
+                setAlbum(data)
+                calculatePrevPages()
+
+            })
+        dispatch({ type: 'SET_LOADING', isLoading: false })
+    }
+
     async function loadPrevPages() {
         dispatch({ type: 'SET_LOADING', isLoading: true })
         await ApiNasa.get(`planetary/apod?api_key=${apiKey}&start_date=${firstDate}&end_date=${lastDate}`)
@@ -71,8 +116,9 @@ export default function MainNasa(props) {
                 const data = response.data.reverse()
                 setAlbum(album.concat(data))
 
-
-
+            })
+            .catch((error) => {
+                console.warn(error.response.code)
             })
         dispatch({ type: 'SET_LOADING', isLoading: false })
 
@@ -113,6 +159,8 @@ export default function MainNasa(props) {
     }
 
     function isLastPage() {
+
+        hiddenInputDate()
         const lastPage = document.querySelector(".carousel").scrollWidth
         const page = document.querySelector(".carousel").scrollLeft
 
@@ -126,10 +174,16 @@ export default function MainNasa(props) {
     function calculatePrevPages() {
         const morePostNumber = 10;
 
-        setLastDate(daysAgo(lastDate, morePostNumber + 1))
-        setFirstDate(daysAgo(firstDate, morePostNumber))
 
-
+        if (firstRefresh === true) {
+            setLastDate(daysAgo(lastDate, morePostNumber + 1))
+            setFirstDate(daysAgo(firstDate, morePostNumber))
+            setFirstRefresh(false)
+        }
+        else {
+            setLastDate(daysAgo(lastDate, morePostNumber))
+            setFirstDate(daysAgo(firstDate, morePostNumber))
+        }
     }
 
     function nextSlide() {
@@ -149,6 +203,14 @@ export default function MainNasa(props) {
         transition()
         isLastPage()
 
+    }
+
+    function showInputDate() {
+        setShowInput(true)
+    }
+
+    function hiddenInputDate() {
+        setShowInput(false)
     }
 
     function transition() {
@@ -171,8 +233,12 @@ export default function MainNasa(props) {
             }
 
         }, 500)
-
     }
+
+    function handlerInputDate(event) {
+        setInputDate(event.target.value)
+    }
+
 
 
     return (
@@ -192,7 +258,7 @@ export default function MainNasa(props) {
                         <div className="draw-line-photo rotate-prev-line-2"></div>
                     </div>
 
-                    <div className="footer">
+                    <div className="footer" onMouseOver={() => hiddenInputDate()}>
 
                         <div className="both-panel">
 
@@ -224,9 +290,19 @@ export default function MainNasa(props) {
                                     <h1>{photo.title}</h1>
                                 </div>
 
-                                <div className="date">
-                                    <p>{photo.date}</p>
+                                <div className="date" onMouseOver={() => showInputDate()} >
+                                    {showInput ? (
+                                        <>
+                                            <div className="input-date"  >
+                                                <input type="date" value={inputDate} onChange={(e) => handlerInputDate(e)}></input>
+                                                <Link to={`${inputDate}`}>Go</Link>
+                                            </div>
+                                        </>
+                                    ) : (
+                                            <p>{photo.date}</p>
+                                        )}
                                 </div>
+
 
                                 {showExplanation ? (
                                     <div className="explanation" onMouseOut={() => toggleExplanationOff()} >
@@ -256,6 +332,8 @@ export default function MainNasa(props) {
                                                 gesture="media"
                                                 allowFullScreen
                                                 className="video"
+                                                onTouchMove={() => isLastPage()}
+                                                onMouseMove={() => isLastPage()}
                                             />
                                         </div>
                                     )}

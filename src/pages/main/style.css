@@ -104,19 +104,34 @@
     grid-row: 1;
     z-index: 2;
     display: flex;
-
     padding: 1.6rem;
     font-size: 2.0rem;
     transition: 1.0s;
-
-    color:#FFF;
-
-
-    justify-content: center;
-
+        justify-content: center;
     opacity: 1;
-
+    color: #FFF;
+    display: flex;
+    align-items: center;
 }
+
+.input-date{
+    display: flex;
+    align-items: center;
+}
+
+.input-date a{
+    text-decoration: none;
+    color: #FFF;
+
+    padding-left: 0.5rem;
+
+    font-size: 3rem;
+}
+
+
+
+
+
 .date.hide{
     grid-column-start: 3;
     grid-column-end: 3;
