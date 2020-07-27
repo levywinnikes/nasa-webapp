@@ -20,7 +20,6 @@ export default function NasaPhoto(props) {
 
     useEffect(() => {
         if (!props.match.params.date) {
-            console.log("loadEntity")
             loadEntity()
         }
         else {

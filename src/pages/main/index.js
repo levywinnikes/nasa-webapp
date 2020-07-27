@@ -11,7 +11,9 @@ export default function MainNasa(props) {
     const dispatch = useDispatch()
     const apiKey = useSelector(state => state.apiKey)
     const lastPost = useSelector(state => state.lastPost)
+    const firstPost = useSelector(state => state.firstPost)
     const isLoading = useSelector(state => state.isLoading)
+    const [status, setStatus] = useState("Loading...")
     const [showExplanation, setShowExplanation] = useState(false)
     const [showAbout, setShowAbout] = useState(false)
     const [album, setAlbum] = useState([{}])
@@ -30,13 +32,11 @@ export default function MainNasa(props) {
         console.log(props.match.params.date)
 
         if (props.match.params.date === undefined) {
-
-            console.log("preciso chegar aqui")
             const dateAgo = daysAgo(lastPost.slice(5), 10)
             const today = lastPost.slice(5)
             setLastDate(today)
             setFirstDate(dateAgo)
-            setEntityLoad("Load-Entity")
+            setEntityLoad(entityLoad + 1)
         }
 
         else {
@@ -45,7 +45,12 @@ export default function MainNasa(props) {
             const today = propDate
             setLastDate(today)
             setFirstDate(dateAgo)
-            setEntityLoad("Load-Props")
+
+            validateQueryDate()
+
+            console.log(firstDate)
+
+            setEntityLoad(entityLoad + 1)
         }
 
     }, [lastPost])
@@ -57,19 +62,20 @@ export default function MainNasa(props) {
     }, [entityLoad])
 
     useEffect(() => {
-        console.log("cheguei aqui")
-
         if (props.match.params.date !== undefined) {
+            setFirstRefresh(true)
+            validateQueryDate()
+
+
             const propDate = props.match.params.date
             const dateAgo = daysAgo(propDate, 10)
             const today = propDate
             setLastDate(today)
             setFirstDate(dateAgo)
-            setEntityLoad("Change-props")
+            setEntityLoad(entityLoad + 1)
+
         }
     }, [props.match.params.date])
-
-
 
 
 
@@ -80,8 +86,22 @@ export default function MainNasa(props) {
         lastDayToDate.setDate(lastDayToDate.getDate() - days)
         newDate = new Intl.DateTimeFormat('fr-CA').format(Date.parse(lastDayToDate))
 
+
+
         return newDate
 
+    }
+
+    async function validateQueryDate() {
+        const firstStoreDate = new Date(firstPost.slice(5))
+        const lastStoreDate = new Date(lastPost.slice(5))
+        const firstQueryDate = new Date(firstDate)
+        const lastQueryDate = new Date(lastDate)
+
+        if (firstQueryDate < firstStoreDate) {
+             setFirstDate(await firstPost.slice(5))
+
+        }
     }
 
     async function loadEntity() {
@@ -93,21 +113,14 @@ export default function MainNasa(props) {
                 calculatePrevPages()
 
             })
-        dispatch({ type: 'SET_LOADING', isLoading: false })
-
-    }
-
-    async function loadProps() {
-        dispatch({ type: 'SET_LOADING', isLoading: true })
-        await ApiNasa.get(`planetary/apod?api_key=${apiKey}&start_date=${firstDate}&end_date=${lastDate}`)
-            .then((response) => {
-                const data = response.data.reverse()
-                setAlbum(data)
-                calculatePrevPages()
-
+            .catch((error) => {
+                setStatus(error.response.statusText)
             })
+
         dispatch({ type: 'SET_LOADING', isLoading: false })
+
     }
+
 
     async function loadPrevPages() {
         dispatch({ type: 'SET_LOADING', isLoading: true })
@@ -126,19 +139,7 @@ export default function MainNasa(props) {
 
 
 
-    async function changeDate() {
 
-        dispatch({ type: 'SET_LOADING', isLoading: true })
-        await ApiNasa.get(`planetary/apod?api_key=${apiKey}&start_date=2020-06-22&end_${lastPost}`)
-            .then((response) => {
-                const data = response.data
-                setAlbum(data)
-                console.log(data)
-
-
-            })
-        dispatch({ type: 'SET_LOADING', isLoading: false })
-    }
 
 
     function toggleExplanationOn() {
@@ -164,9 +165,34 @@ export default function MainNasa(props) {
         const lastPage = document.querySelector(".carousel").scrollWidth
         const page = document.querySelector(".carousel").scrollLeft
 
-        if ((page * 1.20) > lastPage && isLoading === false) {
+        const firstStoreDate = new Date(firstPost.slice(5))
+        const lastStoreDate = new Date(lastPost.slice(5))
+        const firstQueryDate = new Date(firstDate)
+        const lastQueryDate = new Date(lastDate)
 
-            calculatePrevPages()
+
+
+
+
+
+        //lastQueryDate > firstStoreDate
+
+
+        if ((page * 1.20) > lastPage && isLoading === false && lastQueryDate > firstStoreDate) {
+
+            //Se a API da nasa receber uma data abaixo a do seu primeiro post ocorrerá um erro na API
+            console.log(`A data ${firstDate} é menor que ${firstPost.slice(5)}`)
+            if (firstQueryDate < firstStoreDate) {
+                setFirstDate(firstPost.slice(5))
+
+                console.log(firstDate)
+            }
+            else {
+                calculatePrevPages()
+
+            }
+
+
             loadPrevPages()
         }
     }
@@ -277,7 +303,7 @@ export default function MainNasa(props) {
 
                     {isLoading ? (
                         <div className="loading">
-                            <h3>Loading...</h3>
+                            <h3>{status}</h3>
                         </div>
                     ) : (<></>)}
 
