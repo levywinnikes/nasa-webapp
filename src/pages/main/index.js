@@ -17,69 +17,66 @@ export default function MainNasa(props) {
     const [showExplanation, setShowExplanation] = useState(false)
     const [showAbout, setShowAbout] = useState(false)
     const [album, setAlbum] = useState([{}])
-    const [firstDate, setFirstDate] = useState()
-    const [lastDate, setLastDate] = useState()
-    const [entityLoad, setEntityLoad] = useState("")
+    const [firstDate, setFirstDate] = useState(null)
+    const [lastDate, setLastDate] = useState(null)
     const [inputDate, setInputDate] = useState("")
     const [showInput, setShowInput] = useState(false)
-    const [firstRefresh, setFirstRefresh] = useState(true)
-
-
 
 
 
     useEffect(() => {
-        console.log(props.match.params.date)
+        setLastDate(lastPost.slice(5))
+        setFirstDate(daysAgo(lastPost, 10))
 
-        if (props.match.params.date === undefined) {
-            const dateAgo = daysAgo(lastPost.slice(5), 10)
-            const today = lastPost.slice(5)
-            setLastDate(today)
-            setFirstDate(dateAgo)
-            setEntityLoad(entityLoad + 1)
-        }
+        console.log(lastPost.slice(5) +  "1")
+        console.log(daysAgo(lastPost,10) + "2")
 
-        else {
-            const propDate = props.match.params.date
-            const dateAgo = daysAgo(propDate, 10)
-            const today = propDate
-            setLastDate(today)
-            setFirstDate(dateAgo)
-
-            validateQueryDate()
-
-            console.log(firstDate)
-
-            setEntityLoad(entityLoad + 1)
-        }
-
-    }, [lastPost])
-
-
-    useEffect(() => {
-        loadEntity()
-
-    }, [entityLoad])
+    }, [])
 
     useEffect(() => {
         if (props.match.params.date !== undefined) {
-            setFirstRefresh(true)
-            validateQueryDate()
+            setAlbum([{}])
 
-
-            const propDate = props.match.params.date
-            const dateAgo = daysAgo(propDate, 10)
-            const today = propDate
-
-
-
-            setLastDate(today)
-
-            setFirstDate(dateAgo)
-            setEntityLoad(entityLoad + 1)
+            setLastDate(props.match.params.date)
+            setFirstDate(daysAgo(props.match.params.date, 9))
 
         }
     }, [props.match.params.date])
+
+
+    useEffect(() => {
+
+        if (firstDate !== null && lastDate !== null) {
+            var validFirstDate = new Date(firstDate)
+            var validLastDate = new Date(lastDate)
+            var validFirstPost = new Date(firstPost.slice(5))
+            var validLastPost = new Date(lastPost.slice(5))
+
+            if (validFirstDate < validFirstPost) {
+                setFirstDate(firstPost.slice(5))
+            }
+            else if (validLastDate < validFirstPost) {
+                setLastDate(firstPost.slice(5))
+            }
+            else if (validFirstDate > validLastPost) {
+                setFirstDate(lastPost.slice(5))
+
+            }
+            else if (validLastDate > validLastPost) {
+                setLastDate(lastPost.slice(5))
+                setFirstDate(daysAgo(lastPost.slice(5), 10))
+
+            }
+            else {
+                loadEntity()
+
+            }
+
+        }
+    }, [firstDate, lastDate])
+
+
+
 
 
 
@@ -88,7 +85,7 @@ export default function MainNasa(props) {
         var lastDayToDate = new Date(day)
         var newDate = null
         lastDayToDate.setDate(lastDayToDate.getDate() - days)
-        
+
 
         newDate = new Intl.DateTimeFormat('fr-CA').format(Date.parse(lastDayToDate))
 
@@ -98,26 +95,20 @@ export default function MainNasa(props) {
 
     }
 
-    async function validateQueryDate() {
-        const firstStoreDate = new Date(firstPost.slice(5))
-        const lastStoreDate = new Date(lastPost.slice(5))
-        const firstQueryDate = new Date(firstDate)
-        const lastQueryDate = new Date(lastDate)
-
-        if (firstQueryDate < firstStoreDate) {
-             setFirstDate(await firstPost.slice(5))
-
-        }
-    }
 
     async function loadEntity() {
         dispatch({ type: 'SET_LOADING', isLoading: true })
         await ApiNasa.get(`planetary/apod?api_key=${apiKey}&start_date=${firstDate}&end_date=${lastDate}`)
             .then((response) => {
-                const data = response.data.reverse()
-                setAlbum(data)
-                calculatePrevPages()
 
+                if (album.length <= 1) {
+                    const data = response.data.reverse()
+                    setAlbum(data)
+                }
+                else {
+                    const data = response.data.reverse()
+                    setAlbum(album.concat(data))
+                }
             })
             .catch((error) => {
                 setStatus(error.response.statusText)
@@ -126,26 +117,6 @@ export default function MainNasa(props) {
         dispatch({ type: 'SET_LOADING', isLoading: false })
 
     }
-
-
-    async function loadPrevPages() {
-        dispatch({ type: 'SET_LOADING', isLoading: true })
-        await ApiNasa.get(`planetary/apod?api_key=${apiKey}&start_date=${firstDate}&end_date=${lastDate}`)
-            .then((response) => {
-                const data = response.data.reverse()
-                setAlbum(album.concat(data))
-
-            })
-            .catch((error) => {
-                console.warn(error.response.code)
-            })
-        dispatch({ type: 'SET_LOADING', isLoading: false })
-
-    }
-
-
-
-
 
 
     function toggleExplanationOn() {
@@ -167,6 +138,8 @@ export default function MainNasa(props) {
 
     function isLastPage() {
 
+
+
         hiddenInputDate()
         const lastPage = document.querySelector(".carousel").scrollWidth
         const page = document.querySelector(".carousel").scrollLeft
@@ -178,13 +151,10 @@ export default function MainNasa(props) {
 
 
 
+        if (((page * 1.20) > lastPage) && isLoading === false && lastQueryDate > firstStoreDate) {
 
+            console.log("Final da pagina")
 
-
-        //lastQueryDate > firstStoreDate
-
-
-        if ((page * 1.20) > lastPage && isLoading === false && lastQueryDate > firstStoreDate) {
 
             //Se a API da nasa receber uma data abaixo a do seu primeiro post ocorrerá um erro na API
             console.log(`A data ${firstDate} é menor que ${firstPost.slice(5)}`)
@@ -198,24 +168,17 @@ export default function MainNasa(props) {
 
             }
 
-
-            loadPrevPages()
         }
     }
+
 
     function calculatePrevPages() {
         const morePostNumber = 10;
 
+        setLastDate(daysAgo(lastDate, morePostNumber))
+        setFirstDate(daysAgo(firstDate, morePostNumber))
 
-        if (firstRefresh === true) {
-            setLastDate(daysAgo(lastDate, morePostNumber + 1))
-            setFirstDate(daysAgo(firstDate, morePostNumber))
-            setFirstRefresh(false)
-        }
-        else {
-            setLastDate(daysAgo(lastDate, morePostNumber))
-            setFirstDate(daysAgo(firstDate, morePostNumber))
-        }
+
     }
 
     function nextSlide() {
@@ -315,65 +278,63 @@ export default function MainNasa(props) {
 
 
 
-                    {album.sort().map(photo => (
-                        <>
-                            <div className="post">
-                                <div className="title">
-                                    <h1>{photo.title}</h1>
-                                </div>
+                    {album.sort().map((photo, index) => (
+                        <div key={index} className="post">
+                            <div className="title">
+                                <h1>{photo.title}</h1>
+                            </div>
 
-                                <div className="date" onMouseOver={() => showInputDate()} >
-                                    {showInput ? (
-                                        <>
-                                            <div className="input-date"  >
-                                                <input type="date" value={inputDate} onChange={(e) => handlerInputDate(e)}></input>
-                                                <Link to={`${inputDate}`}>Go</Link>
-                                            </div>
-                                        </>
-                                    ) : (
-                                            <p>{photo.date}</p>
-                                        )}
-                                </div>
-
-
-                                {showExplanation ? (
-                                    <div className="explanation" onMouseOut={() => toggleExplanationOff()} >
-                                        <h3>{photo.title}</h3>
-                                        <p>{photo.explanation}</p>
-                                    </div>) : (<> </>)}
-
-
-                                {showAbout ? (
-                                    <div className="about" onMouseOut={() => toggleAboutOff()} >
-                                        <p>Created by: André Levy S. Winnikes</p>
-                                    </div>
-                                ) : (<> </>)}
-
-
-                                {photo.media_type === "image" ? (
-                                    <img
-                                        src={photo.url}
-                                        onMouseMove={() => isLastPage()}
-                                        onTouchMove={() => isLastPage()}
-                                    ></img>
-                                ) : (
-                                        <div className="video">
-                                            <iframe
-                                                src={photo.url}
-                                                title="nasa-video"
-                                                gesture="media"
-                                                allowFullScreen
-                                                className="video"
-                                                onTouchMove={() => isLastPage()}
-                                                onMouseMove={() => isLastPage()}
-                                            />
+                            <div className="date" onMouseOver={() => showInputDate()} >
+                                {showInput ? (
+                                    <>
+                                        <div className="input-date"  >
+                                            <input type="date" value={inputDate} onChange={(e) => handlerInputDate(e)}></input>
+                                            <Link to={`${inputDate}`}>Go</Link>
                                         </div>
+                                    </>
+                                ) : (
+                                        <p>{photo.date}</p>
                                     )}
-
                             </div>
 
 
-                        </>
+                            {showExplanation ? (
+                                <div className="explanation" onMouseOut={() => toggleExplanationOff()} >
+                                    <h3>{photo.title}</h3>
+                                    <p>{photo.explanation}</p>
+                                </div>) : (<> </>)}
+
+
+                            {showAbout ? (
+                                <div className="about" onMouseOut={() => toggleAboutOff()} >
+                                    <p>Created by: André Levy S. Winnikes</p>
+                                </div>
+                            ) : (<> </>)}
+
+
+                            {photo.media_type === "image" ? (
+                                <img
+                                    src={photo.url}
+                                    onMouseMove={() => isLastPage()}
+                                    onTouchMove={() => isLastPage()}
+                                ></img>
+                            ) : (
+                                    <div className="video">
+                                        <iframe
+                                            src={photo.url}
+                                            title="nasa-video"
+                                            gesture="media"
+                                            allowFullScreen
+                                            className="video"
+                                            onTouchMove={() => isLastPage()}
+                                            onMouseMove={() => isLastPage()}
+                                        />
+                                    </div>
+                                )}
+
+                        </div>
+
+
                     ))}
 
                 </div>
