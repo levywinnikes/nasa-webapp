@@ -135,29 +135,28 @@ export default function MainNasa(props) {
     }
 
 
+    function closeAll() {
+        setShowAbout(false)
+        setShowExplanation(false)
+        setShowInput(false)
+
+    }
+
     function toggleExplanationOn() {
         setShowExplanation(true)
         setShowAbout(false)
     }
 
-    function toggleExplanationOff() {
-        setShowExplanation(false)
-    }
 
     function toggleAboutOn() {
         setShowAbout(true)
         setShowExplanation(false)
     }
 
-    function toggleAboutOff() {
-        setShowAbout(false)
-
-    }
 
     function isLastPage() {
 
 
-        hiddenInputDate()
         const lastPage = document.querySelector(".carousel").scrollWidth
         const page = document.querySelector(".carousel").scrollLeft
         //const pageScroll = document.querySelector(".carousel")
@@ -221,9 +220,7 @@ export default function MainNasa(props) {
         setShowInput(true)
     }
 
-    function hiddenInputDate() {
-        setShowInput(false)
-    }
+
 
     function transition() {
 
@@ -270,7 +267,7 @@ export default function MainNasa(props) {
                         <div className="draw-line-photo rotate-prev-line-2"></div>
                     </div>
 
-                    <div className="footer" onMouseOver={() => hiddenInputDate()}>
+                    <div className="footer" >
 
                         <div className="both-panel">
 
@@ -313,15 +310,18 @@ export default function MainNasa(props) {
 
 
                             {showExplanation ? (
-                                <div className="explanation" onMouseOut={() => toggleExplanationOff()} >
+                                <div className="explanation" >
                                     <h3>{photo.title}</h3>
                                     <p>{photo.explanation}</p>
                                 </div>) : (<> </>)}
 
 
                             {showAbout ? (
-                                <div className="about" onMouseOut={() => toggleAboutOff()} >
+                                <div className="about" >
                                     <p>Created by: André Levy S. Winnikes</p>
+                                    <p>Aplication demo using nasa API, react, hooks and redux</p>
+                                    <a href="https://api.nasa.gov/">https://api.nasa.gov/</a>
+
                                 </div>
                             ) : (<> </>)}
 
@@ -331,6 +331,7 @@ export default function MainNasa(props) {
                                     src={photo.url}
                                     onMouseMove={() => isLastPage()}
                                     onTouchMove={() => isLastPage()}
+                                    onMouseOver={() => closeAll()}
                                 ></img>
                             ) : (
                                     <div className="video">
@@ -342,6 +343,8 @@ export default function MainNasa(props) {
                                             className="video"
                                             onTouchMove={() => isLastPage()}
                                             onMouseMove={() => isLastPage()}
+                                            onMouseOver={() => closeAll()}
+
                                         />
                                     </div>
                                 )}

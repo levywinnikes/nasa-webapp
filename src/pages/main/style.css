@@ -193,6 +193,7 @@
 
 
 .about{
+    max-height: 10vh;
 
 
     grid-row-start: 4;
@@ -205,6 +206,8 @@
     text-align: justify;
     background-color: #242423;
 
+    overflow-y: auto;
+
 }
 
 .about p{
@@ -216,6 +219,15 @@
     padding: 12px 2rem;
 
     pointer-events: none;
+}
+
+.about a{
+
+    width: 100%;
+    height: 100%;
+
+    padding: 12px 2rem;
+
 }
 
 
