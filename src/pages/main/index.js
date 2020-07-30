@@ -28,9 +28,6 @@ export default function MainNasa(props) {
         setLastDate(lastPost.slice(5))
         setFirstDate(daysAgo(lastPost, 10))
 
-        console.log(lastPost.slice(5) +  "1")
-        console.log(daysAgo(lastPost,10) + "2")
-
     }, [])
 
     useEffect(() => {
@@ -96,19 +93,38 @@ export default function MainNasa(props) {
     }
 
 
+    function daysAfter(day, days) {
+        var lastDayToDate = new Date(day)
+        var newDate = null
+        lastDayToDate.setDate(lastDayToDate.getDate() + days)
+
+
+        newDate = new Intl.DateTimeFormat('fr-CA').format(Date.parse(lastDayToDate))
+
+
+
+        return newDate
+
+    }
+
+
+
+
     async function loadEntity() {
         dispatch({ type: 'SET_LOADING', isLoading: true })
         await ApiNasa.get(`planetary/apod?api_key=${apiKey}&start_date=${firstDate}&end_date=${lastDate}`)
             .then((response) => {
 
                 if (album.length <= 1) {
-                    const data = response.data.reverse()
+                    const data = response.data
                     setAlbum(data)
                 }
                 else {
-                    const data = response.data.reverse()
+                    const data = response.data
                     setAlbum(album.concat(data))
                 }
+
+
             })
             .catch((error) => {
                 setStatus(error.response.statusText)
@@ -121,6 +137,7 @@ export default function MainNasa(props) {
 
     function toggleExplanationOn() {
         setShowExplanation(true)
+        setShowAbout(false)
     }
 
     function toggleExplanationOff() {
@@ -129,6 +146,7 @@ export default function MainNasa(props) {
 
     function toggleAboutOn() {
         setShowAbout(true)
+        setShowExplanation(false)
     }
 
     function toggleAboutOff() {
@@ -139,10 +157,12 @@ export default function MainNasa(props) {
     function isLastPage() {
 
 
-
         hiddenInputDate()
         const lastPage = document.querySelector(".carousel").scrollWidth
         const page = document.querySelector(".carousel").scrollLeft
+        //const pageScroll = document.querySelector(".carousel")
+
+
 
         const firstStoreDate = new Date(firstPost.slice(5))
         const lastStoreDate = new Date(lastPost.slice(5))
@@ -150,26 +170,23 @@ export default function MainNasa(props) {
         const lastQueryDate = new Date(lastDate)
 
 
-
         if (((page * 1.20) > lastPage) && isLoading === false && lastQueryDate > firstStoreDate) {
 
-            console.log("Final da pagina")
+            //  calculateNextPages()
+            calculatePrevPages()
+        }
 
 
-            //Se a API da nasa receber uma data abaixo a do seu primeiro post ocorrerá um erro na API
-            console.log(`A data ${firstDate} é menor que ${firstPost.slice(5)}`)
-            if (firstQueryDate < firstStoreDate) {
-                setFirstDate(firstPost.slice(5))
+        if (page === 0 && isLoading === false && firstQueryDate < lastStoreDate) {
+            //calculateNextPages()
 
-                console.log(firstDate)
-            }
-            else {
-                calculatePrevPages()
-
-            }
+            //pageScroll.scrollBy(lastPage, 0)
 
         }
+
     }
+
+
 
 
     function calculatePrevPages() {
@@ -261,9 +278,6 @@ export default function MainNasa(props) {
                                 <PersonOutline />
 
                             </div>
-                            <div className="button-show" >
-                                <Slideshow />
-                            </div>
                             <div className="button-show button-show-explanation" onMouseOver={() => toggleExplanationOn()}>
                                 <InfoSquare />
                             </div>
@@ -278,7 +292,7 @@ export default function MainNasa(props) {
 
 
 
-                    {album.sort().map((photo, index) => (
+                    {album.sort((a, b) => (a.date < b.date) ? 1 : -1).map((photo, index) => (
                         <div key={index} className="post">
                             <div className="title">
                                 <h1>{photo.title}</h1>
@@ -323,7 +337,7 @@ export default function MainNasa(props) {
                                         <iframe
                                             src={photo.url}
                                             title="nasa-video"
-                                            gesture="media"
+                                            gesture="autoplay"
                                             allowFullScreen
                                             className="video"
                                             onTouchMove={() => isLastPage()}
