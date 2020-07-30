@@ -3,9 +3,9 @@ import ApiNasa from "../../services/nasa-api"
 import { useSelector, useDispatch } from 'react-redux'
 import { InfoSquare } from '@styled-icons/boxicons-regular/InfoSquare'
 import { PersonOutline } from '@styled-icons/evaicons-outline/PersonOutline'
-import { Slideshow } from '@styled-icons/boxicons-regular/Slideshow'
 import { Link } from 'react-router-dom'
 import './style.css'
+import NasaLogo from '../../assets/img/NASA_logo.svg'
 
 export default function MainNasa(props) {
     const dispatch = useDispatch()
@@ -24,7 +24,9 @@ export default function MainNasa(props) {
 
 
 
+
     useEffect(() => {
+        nasaLogoTransition()
         setLastDate(lastPost.slice(5))
         setFirstDate(daysAgo(lastPost, 10))
 
@@ -221,6 +223,19 @@ export default function MainNasa(props) {
     }
 
 
+    function nasaLogoTransition() {
+        var nasaLogo = document.querySelector(".nasa-logo")
+
+        setTimeout(() => {
+            nasaLogo.classList.toggle("hide")
+
+            setTimeout(() => {
+                nasaLogo.classList.toggle("hide")
+            nasaLogo.classList.toggle("done")
+
+            }, 3000)
+        }, 3000)
+    }
 
     function transition() {
 
@@ -250,10 +265,20 @@ export default function MainNasa(props) {
 
 
 
+
+
     return (
         <>
 
+
             <div className="content">
+
+
+                <div className="nasa-logo">
+                    <img src={NasaLogo}></img>
+                    <h1>Nasa interactive gallery</h1>
+                    <p>by Andre Levy</p>
+                </div>
                 <div id="caro" className="carousel" >
                     <div className="header"></div>
 
@@ -320,8 +345,6 @@ export default function MainNasa(props) {
                                 <div className="about" >
                                     <p>Created by: André Levy S. Winnikes</p>
                                     <p>Aplication demo using nasa API, react, hooks and redux</p>
-                                    <a href="https://api.nasa.gov/">https://api.nasa.gov/</a>
-
                                 </div>
                             ) : (<> </>)}
 
