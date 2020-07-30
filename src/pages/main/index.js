@@ -70,7 +70,11 @@ export default function MainNasa(props) {
             const propDate = props.match.params.date
             const dateAgo = daysAgo(propDate, 10)
             const today = propDate
+
+
+
             setLastDate(today)
+
             setFirstDate(dateAgo)
             setEntityLoad(entityLoad + 1)
 
@@ -84,6 +88,8 @@ export default function MainNasa(props) {
         var lastDayToDate = new Date(day)
         var newDate = null
         lastDayToDate.setDate(lastDayToDate.getDate() - days)
+        
+
         newDate = new Intl.DateTimeFormat('fr-CA').format(Date.parse(lastDayToDate))
 
 
