@@ -68,7 +68,6 @@ export default function MainNasa(props) {
             }
             else {
                 loadEntity()
-
             }
 
         }
@@ -162,7 +161,8 @@ export default function MainNasa(props) {
     }
 
     function toggleAboutOn() {
-        setShowExplanation(false)
+        toggleExplanationOff()
+
         var about = document.querySelectorAll(".about")
 
         for (var i = 0; i < about.length; i++) {
@@ -229,7 +229,7 @@ export default function MainNasa(props) {
 
     function nextSlide() {
         const nextSlide = document.querySelector(".carousel")
-        nextSlide.scrollBy(300, 0)
+        nextSlide.scrollBy(-300, 0)
 
 
 
@@ -239,7 +239,7 @@ export default function MainNasa(props) {
 
     function prevSlide() {
         const prevSlide = document.querySelector(".carousel")
-        prevSlide.scrollBy(-300, 0)
+        prevSlide.scrollBy(300, 0)
 
         transition()
         isLastPage()

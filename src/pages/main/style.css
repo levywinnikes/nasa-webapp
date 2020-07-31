@@ -313,6 +313,7 @@
 }
 
 .nasa-logo-image {
+    opacity: 0.6;
     top: 40%;
     left: 50%;
     position: absolute;
@@ -327,6 +328,8 @@
 }
 
 .nasa-logo-title {
+    opacity: 0.6;
+
     text-align: center;
     width: 100%;
     position: absolute;
@@ -334,6 +337,8 @@
 }
 
 .nasa-logo-createdby {
+    opacity: 0.6;
+
     position: absolute;
     bottom: 5%;
     left: 5%;
