@@ -5,6 +5,7 @@
 }
 
 .carousel {
+    display: -webkit-flex;
     display: flex;
     margin: auto;
     width: 100%;
@@ -13,11 +14,11 @@
     overflow-y: none;
     -ms-scroll-snap-type: x mandatory;
         scroll-snap-type: x mandatory;
+        
     scroll-behavior: smooth;
 }
 
 .post {
-    display: -webkit-flex;
     display: grid;
     flex: none;
     width: 100%;
