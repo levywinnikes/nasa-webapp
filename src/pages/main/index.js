@@ -26,7 +26,7 @@ export default function MainNasa(props) {
 
 
     useEffect(() => {
-        nasaLogoTransition()
+        splashScreen(true)
         setLastDate(lastPost.slice(5))
         setFirstDate(daysAgo(lastPost, 10))
 
@@ -136,23 +136,51 @@ export default function MainNasa(props) {
 
     }
 
-
     function closeAll() {
-        setShowAbout(false)
-        setShowExplanation(false)
+        toggleAboutOff()
+        toggleExplanationOff()
         setShowInput(false)
 
     }
 
     function toggleExplanationOn() {
-        setShowExplanation(true)
-        setShowAbout(false)
+        toggleAboutOff()
+        var explanation = document.querySelectorAll(".explanation")
+
+        for (var i = 0; i < explanation.length; i++) {
+            explanation[i].classList.remove("hide")
+        }
     }
 
+    function toggleExplanationOff() {
+        var explanation = document.querySelectorAll(".explanation")
+
+        for (var i = 0; i < explanation.length; i++) {
+            explanation[i].classList.add("hide")
+        }
+
+    }
 
     function toggleAboutOn() {
-        setShowAbout(true)
         setShowExplanation(false)
+        var about = document.querySelectorAll(".about")
+
+        for (var i = 0; i < about.length; i++) {
+
+            about[i].classList.remove("hide")
+        }
+
+    }
+
+    function toggleAboutOff() {
+        var about = document.querySelectorAll(".about")
+
+
+        for (var i = 0; i < about.length; i++) {
+
+            about[i].classList.add("hide")
+
+        }
     }
 
 
@@ -223,18 +251,26 @@ export default function MainNasa(props) {
     }
 
 
-    function nasaLogoTransition() {
+    function splashScreen(active) {
         var nasaLogo = document.querySelector(".nasa-logo")
 
-        setTimeout(() => {
-            nasaLogo.classList.toggle("hide")
+        if (active === true) {
 
             setTimeout(() => {
                 nasaLogo.classList.toggle("hide")
+
+                setTimeout(() => {
+                    nasaLogo.classList.toggle("hide")
+                    nasaLogo.classList.toggle("done")
+
+                }, 3000)
+            }, 3000)
+        }
+        else {
             nasaLogo.classList.toggle("done")
 
-            }, 3000)
-        }, 3000)
+        }
+
     }
 
     function transition() {
@@ -275,9 +311,15 @@ export default function MainNasa(props) {
 
 
                 <div className="nasa-logo">
-                    <img src={NasaLogo}></img>
-                    <h1>Nasa interactive gallery</h1>
-                    <p>by Andre Levy</p>
+                    <div className="nasa-logo-image">
+                        <img src={NasaLogo}></img>
+                    </div>
+                    <div className="nasa-logo-title">
+                        <h1>Nasa interactive gallery</h1>
+                    </div>
+                    <div className="nasa-logo-createdby">
+                        <p>by Andre Levy</p>
+                    </div>
                 </div>
                 <div id="caro" className="carousel" >
                     <div className="header"></div>
@@ -334,19 +376,19 @@ export default function MainNasa(props) {
                             </div>
 
 
-                            {showExplanation ? (
-                                <div className="explanation" >
-                                    <h3>{photo.title}</h3>
-                                    <p>{photo.explanation}</p>
-                                </div>) : (<> </>)}
+
+                            <div className="explanation hide" >
+                                <h3>{photo.title}</h3>
+                                <p>{photo.explanation}</p>
+                            </div>
 
 
-                            {showAbout ? (
-                                <div className="about" >
-                                    <p>Created by: André Levy S. Winnikes</p>
-                                    <p>Aplication demo using nasa API, react, hooks and redux</p>
-                                </div>
-                            ) : (<> </>)}
+
+                            <div className="about hide" >
+                                <p>Created by: André Levy S. Winnikes</p>
+                                <p>Aplication demo using nasa API, react, hooks and redux</p>
+                            </div>
+
 
 
                             {photo.media_type === "image" ? (
