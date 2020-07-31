@@ -26,7 +26,7 @@ export default function MainNasa(props) {
 
 
     useEffect(() => {
-        splashScreen(false)
+        splashScreen(true)
         setLastDate(lastPost.slice(5))
         setFirstDate(daysAgo(lastPost.slice(5), 10))
 
