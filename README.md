@@ -1,4 +1,5 @@
 # NASA WebApp
+This is my first React project created some years ago.
 
 This web application consumes the NASA API (https://api.nasa.gov/) which provides daily photos and articles from NASA. It was last tested with Node.js version 14.17.3.
 
